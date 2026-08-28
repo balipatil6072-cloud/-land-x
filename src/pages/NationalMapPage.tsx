@@ -133,9 +133,9 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
   ];
 
   return (
-    <div className="h-full w-full flex flex-col md:flex-row bg-slate-100 text-slate-900 overflow-hidden font-sans antialiased select-none">
-      {/* LEFT PANEL (~30% DESKTOP / STACKED ON MOBILE) */}
-      <div className="w-full md:w-[32%] lg:w-[30%] h-auto md:h-full bg-white border-r border-slate-300 p-5 overflow-y-auto space-y-6 flex-shrink-0 z-10 shadow-2xs">
+    <div className="h-full w-full flex flex-col md:flex-row bg-slate-100 text-slate-900 overflow-y-auto md:overflow-hidden font-sans antialiased select-none">
+      {/* LEFT PANEL (~30% DESKTOP / STACKED BELOW MAP ON MOBILE) */}
+      <div className="w-full md:w-[32%] lg:w-[30%] h-auto md:h-full bg-white border-r border-slate-300 p-5 overflow-y-auto space-y-6 flex-shrink-0 z-10 shadow-2xs order-2 md:order-1">
         {/* TITLE & PURPOSE */}
         <div>
           <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest block">
@@ -327,8 +327,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
         </div>
       </div>
 
-      {/* RIGHT MAP PANEL (~70% DESKTOP) */}
-      <div className="flex-1 h-full relative z-0">
+      {/* RIGHT MAP PANEL (~70% DESKTOP / TOP ON MOBILE) */}
+      <div className="flex-1 min-h-[380px] md:h-full relative z-0 order-1 md:order-2">
         {/* TOP SEARCH OVERLAY */}
         <div className="absolute top-4 left-4 z-20 w-72 md:w-80 bg-white/95 backdrop-blur-md border border-slate-300 rounded shadow-md p-1 flex items-center">
           <Search className="w-4 h-4 text-slate-400 ml-2" />
