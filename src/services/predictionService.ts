@@ -5,7 +5,36 @@ import type {
   PredictionResult,
   RiskContributor,
   RiskCategory,
+  ProjectType,
+  StageName,
 } from '../types';
+
+export interface AddProjectInput {
+  name: string;
+  projectType: ProjectType;
+  state: string;
+  district: string;
+  agency?: string;
+  landAreaHa: number;
+  affectedFamilies: number;
+  currentStage: StageName;
+  compensationPaidPercent: number;
+  approvalStatusPercent: number;
+  documentationCompletenessPercent: number;
+  possessionStatusPercent: number;
+  rrProgressPercent: number;
+  legalCasesCount: number;
+  pendingNotificationsCount: number;
+  stakeholderResponsiveness: 'High' | 'Medium' | 'Low' | 'Critical Blockade';
+}
+
+export interface DetailedAnalysisResult extends PredictionResult {
+  delayProbability: number;
+  riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL';
+  stageRisks: Array<{ stage: string; riskLevel: string; riskScore: number }>;
+  explanations: string[];
+  recommendations: string[];
+}
 
 /**
  * Deterministic prototype prediction engine for LAND-X (SIH26017).
@@ -28,14 +57,11 @@ export function predictRiskFromFeatures(
   );
 
   const legalScore = Math.min(100, features.legalCasesCount * 5.8);
-
   const approvalScore = Math.min(100, features.pendingApprovalsCount * 22.0);
-
   const documentationScore = Math.min(
     100,
     (100 - features.documentationCompletenessPercent) * 1.15
   );
-
   const rrScore = Math.min(100, (100 - features.rrProgressPercent) * 0.45);
 
   // 2. Stage variance penalty
@@ -106,20 +132,15 @@ export function predictRiskFromFeatures(
   ];
 
   const contributors: RiskContributor[] = rawContributors.sort((a, b) => b.percentage - a.percentage);
-
-  // 5. Predict delay days based on risk score & stage variance
   const basePredictedDelayDays = Math.round(rawRiskScore * 0.72 + cumulativeVariance * 0.35);
 
-  // 6. Risk category determination
   let riskCategory: RiskCategory = 'Low';
   if (rawRiskScore >= 80) riskCategory = 'Critical';
   else if (rawRiskScore >= 60) riskCategory = 'High';
   else if (rawRiskScore >= 40) riskCategory = 'Medium';
 
-  // 7. Model confidence estimate
   const confidencePercent = Math.min(94, Math.max(76, 89 - Math.abs(compPct - legalPct) / 5));
 
-  // 8. Natural language executive summary
   const topFactor = contributors[0];
   const explanation = `${topFactor.factor} status is currently the primary driver of predicted delay risk (${topFactor.percentage}% contribution). Risk score of ${rawRiskScore}% indicates severe probability of schedule slip (${basePredictedDelayDays} projected delay days) unless priority intervention is triggered.`;
 
@@ -135,8 +156,177 @@ export function predictRiskFromFeatures(
 }
 
 /**
+ * SIH26017 Core End-to-End Predictive Analytics Scoring Engine.
+ * Analyzes raw project input parameters and computes deterministic delay risk,
+ * risk drivers, stage-level risk breakdown, explanations, and recommendations.
+ */
+export function analyzeNewProjectInput(input: AddProjectInput): DetailedAnalysisResult {
+  const compUnpaidPct = Math.max(0, 100 - input.compensationPaidPercent);
+  const docIncompletePct = Math.max(0, 100 - input.documentationCompletenessPercent);
+  const appPendingPct = Math.max(0, 100 - input.approvalStatusPercent);
+  const rrIncompletePct = Math.max(0, 100 - input.rrProgressPercent);
+
+  // Individual factor risk scores (0-100)
+  const compensationScore = Math.min(
+    100,
+    compUnpaidPct * 1.1 + (input.stakeholderResponsiveness === 'Critical Blockade' ? 25 : input.stakeholderResponsiveness === 'Low' ? 15 : 0)
+  );
+  const legalScore = Math.min(100, input.legalCasesCount * 7.5);
+  const approvalScore = Math.min(100, appPendingPct * 0.85 + input.pendingNotificationsCount * 5.0);
+  const docScore = Math.min(100, docIncompletePct * 1.15);
+  const rrScore = Math.min(100, rrIncompletePct * 0.65);
+
+  // Weighted total score
+  const weightedSum =
+    compensationScore * 0.32 +
+    legalScore * 0.27 +
+    approvalScore * 0.20 +
+    docScore * 0.13 +
+    rrScore * 0.08;
+
+  const rawRiskScore = Math.min(98, Math.max(12, Math.round(weightedSum)));
+  const delayProbability = rawRiskScore;
+  const predictedDelayDays = Math.round(rawRiskScore * 0.82 + (input.affectedFamilies > 1000 ? 20 : 0));
+
+  let riskLevel: 'LOW' | 'MODERATE' | 'HIGH' | 'CRITICAL' = 'LOW';
+  let riskCategory: RiskCategory = 'Low';
+
+  if (rawRiskScore >= 81) {
+    riskLevel = 'CRITICAL';
+    riskCategory = 'Critical';
+  } else if (rawRiskScore >= 61) {
+    riskLevel = 'HIGH';
+    riskCategory = 'High';
+  } else if (rawRiskScore >= 31) {
+    riskLevel = 'MODERATE';
+    riskCategory = 'Medium';
+  }
+
+  // Calculate risk drivers contribution
+  const totalFactorSum = compensationScore + legalScore + approvalScore + docScore + rrScore || 1;
+  const compPct = Math.round((compensationScore / totalFactorSum) * 100);
+  const legalPct = Math.round((legalScore / totalFactorSum) * 100);
+  const appPct = Math.round((approvalScore / totalFactorSum) * 100);
+  const docPct = Math.round((docScore / totalFactorSum) * 100);
+  const rrPct = Math.max(0, 100 - (compPct + legalPct + appPct + docPct));
+
+  const rawContributors = [
+    {
+      factor: 'Compensation' as const,
+      percentage: compPct,
+      description: `${compUnpaidPct}% compensation unpaid across ${input.affectedFamilies} families`,
+      impactColor: '#ef4444',
+    },
+    {
+      factor: 'Legal complexity' as const,
+      percentage: legalPct,
+      description: `${input.legalCasesCount} pending title disputes active in revenue court`,
+      impactColor: '#f97316',
+    },
+    {
+      factor: 'Approval' as const,
+      percentage: appPct,
+      description: `${appPendingPct}% approvals pending (${input.pendingNotificationsCount} gazette notifications)`,
+      impactColor: '#eab308',
+    },
+    {
+      factor: 'Documentation' as const,
+      percentage: docPct,
+      description: `${docIncompletePct}% land record documentation incomplete`,
+      impactColor: '#3b82f6',
+    },
+    {
+      factor: 'R&R Progress' as const,
+      percentage: rrPct,
+      description: `${rrIncompletePct}% R&R physical resettlement pending`,
+      impactColor: '#6b7280',
+    },
+  ];
+
+  const contributors: RiskContributor[] = rawContributors.sort((a, b) => b.percentage - a.percentage);
+
+  // Stage-Level Risk Breakdown
+  const stageRisks = [
+    {
+      stage: 'Notification',
+      riskLevel: input.pendingNotificationsCount > 3 ? 'HIGH' : input.pendingNotificationsCount > 0 ? 'MODERATE' : 'LOW',
+      riskScore: Math.min(95, input.pendingNotificationsCount * 20 + 20),
+    },
+    {
+      stage: 'Approval',
+      riskLevel: input.approvalStatusPercent < 50 ? 'HIGH' : input.approvalStatusPercent < 80 ? 'MODERATE' : 'LOW',
+      riskScore: Math.round(100 - input.approvalStatusPercent),
+    },
+    {
+      stage: 'Compensation',
+      riskLevel: input.compensationPaidPercent < 40 ? 'CRITICAL' : input.compensationPaidPercent < 70 ? 'HIGH' : 'MODERATE',
+      riskScore: Math.round(100 - input.compensationPaidPercent),
+    },
+    {
+      stage: 'Possession',
+      riskLevel: input.possessionStatusPercent < 30 ? 'HIGH' : input.possessionStatusPercent < 70 ? 'MODERATE' : 'LOW',
+      riskScore: Math.round(100 - input.possessionStatusPercent),
+    },
+    {
+      stage: 'Rehabilitation & Resettlement',
+      riskLevel: input.rrProgressPercent < 40 ? 'HIGH' : input.rrProgressPercent < 70 ? 'MODERATE' : 'LOW',
+      riskScore: Math.round(100 - input.rrProgressPercent),
+    },
+  ];
+
+  // Explainability Generator (Why Land-X Flagged This Project)
+  const explanations: string[] = [];
+  if (input.compensationPaidPercent < 60) {
+    explanations.push(`Compensation disbursement is only ${input.compensationPaidPercent}% complete, triggering elevated risk of landholder protests.`);
+  }
+  if (input.legalCasesCount > 0) {
+    explanations.push(`${input.legalCasesCount} pending court disputes remain unresolved under High Court / District Magistrate revenue tribunals.`);
+  }
+  if (input.approvalStatusPercent < 70) {
+    explanations.push(`Inter-departmental clearance processing (${input.approvalStatusPercent}%) has exceeded expected timeline benchmarks.`);
+  }
+  if (input.stakeholderResponsiveness === 'Critical Blockade' || input.stakeholderResponsiveness === 'Low') {
+    explanations.push(`Stakeholder & local community responsiveness is flagged as ${input.stakeholderResponsiveness}.`);
+  }
+  if (explanations.length === 0) {
+    explanations.push('Project milestones are progressing within baseline parameters with minimal delay factors.');
+  }
+
+  // Recommended Interventions
+  const recommendations: string[] = [];
+  const topDriver = contributors[0].factor;
+
+  if (topDriver === 'Compensation' || input.compensationPaidPercent < 60) {
+    recommendations.push(`Prioritize beneficiary bank account reconciliation camp in ${input.district} Tehsil.`);
+  }
+  if (topDriver === 'Legal complexity' || input.legalCasesCount > 0) {
+    recommendations.push(`Escalate ${input.legalCasesCount} unresolved court cases to District Legal Services Authority (DLSA) fast-track bench.`);
+  }
+  if (topDriver === 'Approval' || input.approvalStatusPercent < 70) {
+    recommendations.push(`Review inter-departmental approval bottlenecks with state Nodal Officer before possession milestone.`);
+  }
+  if (recommendations.length === 0) {
+    recommendations.push('Continue standard bi-weekly milestone monitoring.');
+  }
+
+  return {
+    riskScorePercent: rawRiskScore,
+    predictedDelayDays,
+    delayProbability,
+    riskLevel,
+    riskCategory,
+    confidencePercent: 88,
+    contributors,
+    stageRisks,
+    explanations,
+    recommendations,
+    explanation: `LAND-X predicts ${rawRiskScore}% delay probability (${predictedDelayDays} projected delay days) primarily driven by ${topDriver} status.`,
+    calculatedAt: new Date().toISOString(),
+  };
+}
+
+/**
  * Feature-driven XAI explanation generator for scenario comparison.
- * Derived strictly from feature calculations rather than LLM text generation.
  */
 export function explainScenarioDelta(
   baselineResult: PredictionResult,

@@ -20,6 +20,7 @@ interface AppContextType {
   interventions: InterventionRecord[];
   warnings: EarlyWarningItem[];
   auditLogs: AuditLogEvent[];
+  addProject: (newProject: Project) => void;
   updateProjectFeatures: (
     projectId: string,
     updatedFeatures: Partial<ProjectFeatures>,
@@ -145,6 +146,61 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }),
     };
     setAuditLogs((prev) => [newLog, ...prev]);
+  };
+
+  const addProject = (newProject: Project) => {
+    setProjects((prev) => [newProject, ...prev]);
+
+    const risk = calculateProjectRisk(newProject);
+
+    // If project is High or Critical risk, automatically add Early Warning item
+    if (risk.riskScorePercent >= 60) {
+      const newWarning: EarlyWarningItem = {
+        id: `warn-${newProject.id.toLowerCase()}`,
+        projectId: newProject.id,
+        projectName: newProject.name,
+        state: newProject.state,
+        district: newProject.district,
+        signalType: 'Emerging Risk',
+        warningState: 'NEW',
+        previousRiskScore: Math.max(10, risk.riskScorePercent - 18),
+        currentRiskScore: risk.riskScorePercent,
+        riskVelocityPoints: 18,
+        riskVelocityDays: 14,
+        priorityScore: risk.riskScorePercent,
+        priorityLevel: risk.riskScorePercent >= 80 ? 'P1' : 'P2',
+        primaryDriver: newProject.recommendedIntervention.primaryDriver,
+        evidenceSignals: newProject.evidenceSignals,
+        recommendedAction: newProject.recommendedIntervention.recommendedAction,
+        expectedRiskAfterIntervention: Math.round(risk.riskScorePercent * 0.65),
+        detectedAt: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        historicalTrend: [
+          { date: '14 days ago', riskScore: Math.max(10, risk.riskScorePercent - 18) },
+          { date: '7 days ago', riskScore: Math.max(15, risk.riskScorePercent - 8) },
+          { date: 'Today', riskScore: risk.riskScorePercent },
+        ],
+        warningTimeline: [
+          {
+            id: `ev-${Date.now()}`,
+            date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+            title: 'Project Initialized & Analyzed',
+            description: `LAND-X AI engine completed risk assessment. Score: ${risk.riskScorePercent}% (${risk.riskCategory}).`,
+            severity: risk.riskScorePercent >= 80 ? 'critical' : 'high',
+          },
+        ],
+      };
+      setWarnings((prev) => [newWarning, ...prev]);
+    }
+
+    logAuditEvent({
+      projectId: newProject.id,
+      actionType: 'PREDICTION_GENERATED',
+      actionName: 'New Project Predictive Analysis Run',
+      actor: 'LAND-X AI Engine v2.0',
+      details: `Project ${newProject.id} (${newProject.name}) initialized. Predicted Risk: ${risk.riskScorePercent}% (${risk.predictedDelayDays} delay days).`,
+      beforeRisk: 0,
+      afterRisk: risk.riskScorePercent,
+    });
   };
 
   const updateProjectFeatures = (
@@ -377,6 +433,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         interventions,
         warnings,
         auditLogs,
+        addProject,
         updateProjectFeatures,
         dispatchIntervention,
         updateInterventionStatus,
