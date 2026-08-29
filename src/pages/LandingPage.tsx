@@ -301,10 +301,6 @@ export const LandingPage: React.FC = () => {
                 <span className="text-slate-400 uppercase">STATES</span>
               </span>
             </div>
-
-            <div className="text-slate-400 text-[10px] font-semibold tracking-wider uppercase">
-              SYNTHETIC DEMONSTRATION ENVIRONMENT &bull; SIH26017 &bull; DEPARTMENT OF LAND RESOURCES
-            </div>
           </div>
         </footer>
       </section>
