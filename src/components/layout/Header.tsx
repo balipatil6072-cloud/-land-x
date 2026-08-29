@@ -24,6 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   // Compute Breadcrumb / Page Context Title
   const getBreadcrumbTitle = () => {
+    if (path === '/predictive-intelligence') return { title: 'PREDICTIVE INTELLIGENCE', breadcrumb: 'LAND-X / PREDICT' };
     if (path === '/command-center') return { title: 'NATIONAL SITUATION', breadcrumb: 'LAND-X / OVERVIEW' };
     if (path === '/national-map') return { title: 'NATIONAL MAP (GIS)', breadcrumb: 'LAND-X / MONITOR' };
     if (path === '/projects') return { title: 'PROJECTS DIRECTORY', breadcrumb: 'LAND-X / MONITOR' };

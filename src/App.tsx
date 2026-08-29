@@ -13,6 +13,8 @@ import { InterventionCenterPage } from './pages/InterventionCenterPage';
 import { GovernancePage } from './pages/GovernancePage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 
+import { PredictiveIntelligencePage } from './pages/PredictiveIntelligencePage';
+
 export function App() {
   const [selectedState, setSelectedState] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -23,6 +25,21 @@ export function App() {
         <Routes>
           {/* LAND-X Dark Geospatial Hero Landing Page */}
           <Route path="/" element={<LandingPage />} />
+
+          {/* Core AI Predictive Capability Route */}
+          <Route
+            path="/predictive-intelligence"
+            element={
+              <AppShell
+                selectedState={selectedState}
+                setSelectedState={setSelectedState}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+              >
+                <PredictiveIntelligencePage />
+              </AppShell>
+            }
+          />
 
           {/* Main Enterprise Workspace Routes inside AppShell */}
           <Route

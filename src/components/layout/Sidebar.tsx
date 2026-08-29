@@ -11,6 +11,7 @@ import {
   ChevronLeft,
   ChevronRight,
   FileSpreadsheet,
+  Cpu,
   X,
 } from 'lucide-react';
 import { LandXLogo } from '../common/LandXLogo';
@@ -35,6 +36,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     {
       group: 'HOME',
       items: [{ name: 'Home', path: '/', icon: Home }],
+    },
+    {
+      group: 'PREDICT',
+      items: [{ name: 'Predictive Intelligence', path: '/predictive-intelligence', icon: Cpu, badge: 'AI', badgeColor: 'bg-blue-700 text-white' }],
     },
     {
       group: 'OVERVIEW',
