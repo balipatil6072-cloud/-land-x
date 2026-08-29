@@ -2,15 +2,10 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   Home,
-  LayoutDashboard,
   MapPin,
   FolderKanban,
-  AlertTriangle,
-  Zap,
-  ShieldCheck,
   ChevronLeft,
   ChevronRight,
-  FileSpreadsheet,
   Cpu,
   X,
 } from 'lucide-react';
@@ -23,6 +18,19 @@ interface SidebarProps {
   setIsMobileOpen?: (open: boolean) => void;
 }
 
+interface NavItem {
+  name: string;
+  path: string;
+  icon: any;
+  badge?: string;
+  badgeColor?: string;
+}
+
+interface NavGroup {
+  group: string;
+  items: NavItem[];
+}
+
 export const Sidebar: React.FC<SidebarProps> = ({
   isCollapsed,
   setIsCollapsed,
@@ -31,37 +39,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const location = useLocation();
 
-  // Grouped Navigation Architecture
-  const navGroups = [
+  // Simplified Focused Navigation Hierarchy
+  const navGroups: NavGroup[] = [
     {
       group: 'HOME',
       items: [{ name: 'Home', path: '/', icon: Home }],
     },
     {
       group: 'PREDICT',
-      items: [{ name: 'Predictive Intelligence', path: '/predictive-intelligence', icon: Cpu, badge: 'AI', badgeColor: 'bg-blue-700 text-white' }],
-    },
-    {
-      group: 'OVERVIEW',
-      items: [{ name: 'National Situation', path: '/command-center', icon: LayoutDashboard }],
+      items: [
+        {
+          name: 'Predictive Intelligence',
+          path: '/predictive-intelligence',
+          icon: Cpu,
+          badge: 'AI',
+          badgeColor: 'bg-blue-700 text-white',
+        },
+      ],
     },
     {
       group: 'MONITOR',
       items: [
-        { name: 'National Map', path: '/national-map', icon: MapPin },
         { name: 'Projects', path: '/projects', icon: FolderKanban },
-      ],
-    },
-    {
-      group: 'INTELLIGENCE',
-      items: [{ name: 'Project Intelligence', path: '/projects/LA-1842', icon: FileSpreadsheet }],
-    },
-    {
-      group: 'RESPOND',
-      items: [
-        { name: 'Early Warnings', path: '/early-warning', icon: AlertTriangle, badge: 'P1', badgeColor: 'bg-red-600 text-white' },
-        { name: 'Actions & Interventions', path: '/interventions', icon: Zap },
-        { name: 'Governance Audit', path: '/governance', icon: ShieldCheck },
+        { name: 'National Map', path: '/national-map', icon: MapPin },
       ],
     },
   ];
