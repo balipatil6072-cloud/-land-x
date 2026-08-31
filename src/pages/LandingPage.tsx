@@ -175,7 +175,7 @@ export const LandingPage: React.FC = () => {
             playsInline
             preload="auto"
             poster="/images/land-x-sih26017-hero-poster.jpg?v=sih26017-final"
-            className="absolute inset-0 w-full h-full object-cover object-center z-10 opacity-40 filter brightness-90 saturate-90"
+            className="absolute inset-0 w-full h-full object-cover object-center z-10 opacity-70 filter brightness-95 saturate-100"
           >
             <source
               src="/videos/land-x-sih26017-hero.mp4?v=sih26017-final"
@@ -184,12 +184,12 @@ export const LandingPage: React.FC = () => {
           </video>
         )}
 
-        {/* Layer 2: Dark Navy Gradient Overlay for High Text Readability */}
+        {/* Layer 2: Dark Navy Gradient Overlay for High Text Readability & 35-40% Net Video Visibility */}
         <div
           className="absolute inset-0 z-20 pointer-events-none"
           style={{
             background:
-              'linear-gradient(135deg, rgba(3,8,22,0.92) 0%, rgba(5,14,36,0.85) 50%, rgba(3,8,22,0.94) 100%)',
+              'linear-gradient(135deg, rgba(3,8,22,0.68) 0%, rgba(5,14,36,0.52) 50%, rgba(3,8,22,0.72) 100%)',
           }}
         />
 
@@ -309,7 +309,7 @@ export const LandingPage: React.FC = () => {
               <span>AI PREDICTIVE SIGNAL &bull; CONTINUOUS MONITORING</span>
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.1] font-sans">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.12] font-sans">
               Predict <span className="text-blue-400">land acquisition</span> delays.<br />
               Act before <span className="text-blue-400">infrastructure</span> projects stop.
             </h1>
