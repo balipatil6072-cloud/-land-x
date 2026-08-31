@@ -175,7 +175,7 @@ export const LandingPage: React.FC = () => {
             playsInline
             preload="auto"
             poster="/images/land-x-sih26017-hero-poster.jpg?v=sih26017-final"
-            className="absolute inset-0 w-full h-full object-cover object-center z-10 opacity-70 filter brightness-95 saturate-100"
+            className="absolute inset-0 w-full h-full object-cover object-center z-10 opacity-100 filter brightness-100 saturate-100"
           >
             <source
               src="/videos/land-x-sih26017-hero.mp4?v=sih26017-final"
@@ -184,12 +184,12 @@ export const LandingPage: React.FC = () => {
           </video>
         )}
 
-        {/* Layer 2: Dark Navy Gradient Overlay for High Text Readability & 35-40% Net Video Visibility */}
+        {/* Layer 2: Dark Navy Overlay (62-63% Overlay / 37-38% Net Video Visibility) */}
         <div
           className="absolute inset-0 z-20 pointer-events-none"
           style={{
             background:
-              'linear-gradient(135deg, rgba(3,8,22,0.68) 0%, rgba(5,14,36,0.52) 50%, rgba(3,8,22,0.72) 100%)',
+              'linear-gradient(135deg, rgba(3,8,22,0.63) 0%, rgba(5,14,36,0.58) 50%, rgba(3,8,22,0.64) 100%)',
           }}
         />
 
