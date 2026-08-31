@@ -418,49 +418,135 @@ export const LandingPage: React.FC = () => {
 
       {/* 4. EXPANSION SECTIONS BELOW HERO */}
       <div className="relative z-10 bg-slate-950/95 backdrop-blur-md text-slate-100 w-full space-y-16 py-16 px-4 md:px-12 max-w-7xl mx-auto font-sans text-left">
-        {/* SECTION 1: ABOUT KSHETRA */}
+        {/* SECTION 1: ABOUT KSHETRA (EDITORIAL 2-COLUMN LAYOUT) */}
         <section className="space-y-8 border-b border-slate-800 pb-12">
-          <div className="max-w-3xl space-y-2">
-            <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest block">
-              PLATFORM OVERVIEW
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-sans">
-              ABOUT KSHETRA
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              KSHETRA is a land acquisition intelligence and monitoring platform designed to help authorities identify emerging acquisition bottlenecks before they become project delays.
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* LEFT COLUMN: Editorial Text + Compact Intelligence Modules */}
+            <div className="lg:col-span-6 space-y-6">
+              <div className="space-y-2">
+                <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-widest block">
+                  PLATFORM OVERVIEW
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-sans">
+                  ABOUT KSHETRA
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-sans">
+                  KSHETRA is a land acquisition intelligence and monitoring platform designed to help authorities identify emerging acquisition bottlenecks before they become project delays.
+                </p>
+              </div>
+
+              {/* COMPACT INTELLIGENCE MODULES (PREDICT, IDENTIFY, INTERVENE) */}
+              <div className="space-y-3 font-sans">
+                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xs flex items-start space-x-3.5 shadow-md">
+                  <div className="w-8 h-8 bg-slate-950 border border-slate-800 rounded-xs flex items-center justify-center text-blue-400 font-mono font-bold flex-shrink-0 mt-0.5">
+                    <Compass className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="font-mono font-bold text-white text-xs uppercase tracking-wider flex items-center space-x-2">
+                      <span>PREDICT</span>
+                      <span className="text-[10px] text-blue-400 font-normal">&bull; Early Warning</span>
+                    </h3>
+                    <p className="text-xs text-slate-300 leading-normal mt-0.5">
+                      Identify projects with rising delay probability before schedule benchmarks are breached.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xs flex items-start space-x-3.5 shadow-md">
+                  <div className="w-8 h-8 bg-slate-950 border border-slate-800 rounded-xs flex items-center justify-center text-amber-400 font-mono font-bold flex-shrink-0 mt-0.5">
+                    <AlertTriangle className="w-4 h-4 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-mono font-bold text-white text-xs uppercase tracking-wider flex items-center space-x-2">
+                      <span>IDENTIFY</span>
+                      <span className="text-[10px] text-amber-400 font-normal">&bull; Bottleneck Root-Cause</span>
+                    </h3>
+                    <p className="text-xs text-slate-300 leading-normal mt-0.5">
+                      Determine primary acquisition bottlenecks (compensation, litigation, title disputes, clearances).
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-xs flex items-start space-x-3.5 shadow-md">
+                  <div className="w-8 h-8 bg-slate-950 border border-slate-800 rounded-xs flex items-center justify-center text-emerald-400 font-mono font-bold flex-shrink-0 mt-0.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-mono font-bold text-white text-xs uppercase tracking-wider flex items-center space-x-2">
+                      <span>INTERVENE</span>
+                      <span className="text-[10px] text-emerald-400 font-normal">&bull; Targeted Officer SLA</span>
+                    </h3>
+                    <p className="text-xs text-slate-300 leading-normal mt-0.5">
+                      Prioritize administrative actions, deploy targeted field camps, and monitor risk reduction.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: HIGH-QUALITY INFRASTRUCTURE CORRIDOR VISUAL WITH SYSTEM OVERLAY */}
+            <div className="lg:col-span-6 relative">
+              <div className="relative rounded-xs overflow-hidden border border-slate-800 shadow-2xl group">
+                <img
+                  src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80"
+                  alt="Indian Infrastructure Highway Corridor"
+                  className="w-full h-80 lg:h-96 object-cover object-center filter brightness-90 contrast-105 transition-transform duration-700 group-hover:scale-105"
+                />
+                {/* Subtle Dark Navy Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+
+                {/* System Intelligence Overlay Badge */}
+                <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-sm border border-slate-700/80 p-3 rounded-xs font-mono text-xs text-white shadow-xl flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-[9px] text-blue-400 font-bold uppercase tracking-wider">PROJECT INTELLIGENCE</span>
+                      <span className="text-[10px] bg-blue-900/80 text-blue-200 px-1.5 py-0.2 rounded-xs border border-blue-700">LA-1842</span>
+                    </div>
+                    <div className="font-bold text-slate-100 mt-0.5 font-sans">Infrastructure Corridor Alignment</div>
+                    <div className="text-[10px] text-slate-400 font-mono">Nashik, Maharashtra &bull; Surveyed Sector 4B</div>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <span className="text-[9px] text-slate-400 uppercase font-bold block">STATUS</span>
+                    <span className="text-emerald-400 font-bold text-[10px] flex items-center space-x-1 justify-end">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span>ACTIVE MONITORING</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-slate-900/90 border border-slate-800 p-6 rounded-xs shadow-xl space-y-3">
-              <div className="w-10 h-10 bg-slate-950 border border-slate-800 rounded-xs flex items-center justify-center text-blue-400 font-mono font-bold">
-                <Compass className="w-5 h-5" />
-              </div>
-              <h3 className="font-mono font-bold text-white text-sm uppercase">PREDICT</h3>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                Identify projects with rising delay probability before schedule benchmarks are breached.
-              </p>
+          {/* FIELD -> DATA -> DECISION PROCESS SEQUENCE */}
+          <div className="bg-slate-900/80 border border-slate-800 rounded-xs p-5 shadow-lg font-mono">
+            <div className="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-3">
+              OPERATIONAL PROCESS FLOW &bull; FIELD TO DECISION
             </div>
 
-            <div className="bg-slate-900/90 border border-slate-800 p-6 rounded-xs shadow-xl space-y-3">
-              <div className="w-10 h-10 bg-slate-950 border border-slate-800 rounded-xs flex items-center justify-center text-amber-400 font-mono font-bold">
-                <AlertTriangle className="w-5 h-5 text-amber-400" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-left">
+              <div className="p-3 bg-slate-950/80 border border-slate-800/80 rounded-xs space-y-1">
+                <span className="text-base font-bold text-blue-400 block">01</span>
+                <span className="text-xs font-bold text-white uppercase block font-mono">FIELD &amp; PROJECT DATA</span>
+                <p className="text-[11px] text-slate-400 font-sans">Cadastral, compensation &amp; Tehsil records</p>
               </div>
-              <h3 className="font-mono font-bold text-white text-sm uppercase">IDENTIFY</h3>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                Determine the primary acquisition bottlenecks (compensation, litigation, title disputes, clearances) affecting progress.
-              </p>
-            </div>
 
-            <div className="bg-slate-900/90 border border-slate-800 p-6 rounded-xs shadow-xl space-y-3">
-              <div className="w-10 h-10 bg-slate-950 border border-slate-800 rounded-xs flex items-center justify-center text-emerald-400 font-mono font-bold">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+              <div className="p-3 bg-slate-950/80 border border-slate-800/80 rounded-xs space-y-1">
+                <span className="text-base font-bold text-amber-400 block">02</span>
+                <span className="text-xs font-bold text-white uppercase block font-mono">PREDICTIVE ANALYSIS</span>
+                <p className="text-[11px] text-slate-400 font-sans">ML delay probability scoring</p>
               </div>
-              <h3 className="font-mono font-bold text-white text-sm uppercase">INTERVENE</h3>
-              <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                Prioritize administrative actions, deploy targeted field camps, and monitor whether intervention reduces risk.
-              </p>
+
+              <div className="p-3 bg-slate-950/80 border border-slate-800/80 rounded-xs space-y-1">
+                <span className="text-base font-bold text-red-400 block">03</span>
+                <span className="text-xs font-bold text-white uppercase block font-mono">BOTTLENECK IDENTIFICATION</span>
+                <p className="text-[11px] text-slate-400 font-sans">Litigation, title &amp; clearance diagnosis</p>
+              </div>
+
+              <div className="p-3 bg-slate-950/80 border border-slate-800/80 rounded-xs space-y-1">
+                <span className="text-base font-bold text-emerald-400 block">04</span>
+                <span className="text-xs font-bold text-white uppercase block font-mono">TARGETED INTERVENTION</span>
+                <p className="text-[11px] text-slate-400 font-sans">SLAO action dispatch &amp; audit logging</p>
+              </div>
             </div>
           </div>
         </section>
@@ -535,31 +621,47 @@ export const LandingPage: React.FC = () => {
               </div>
             </div>
 
-            {/* State Concentration Table */}
-            <div className="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-xs divide-y divide-slate-800 font-mono text-xs shadow-xl">
-              <div className="p-3 bg-slate-950 font-bold text-slate-300 flex justify-between">
-                <span>STATE JURISDICTION</span>
-                <span>AT-RISK CORRIDORS</span>
+            {/* State Concentration Table + Supporting Infrastructure Imagery */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="bg-slate-900/90 border border-slate-800 rounded-xs divide-y divide-slate-800 font-mono text-xs shadow-xl">
+                <div className="p-3 bg-slate-950 font-bold text-slate-300 flex justify-between">
+                  <span>STATE JURISDICTION</span>
+                  <span>AT-RISK CORRIDORS</span>
+                </div>
+                <div className="p-3 flex justify-between items-center">
+                  <span className="font-bold text-white">Maharashtra</span>
+                  <span className="font-bold text-red-400">142 at-risk projects</span>
+                </div>
+                <div className="p-3 flex justify-between items-center">
+                  <span className="font-bold text-white">Uttar Pradesh</span>
+                  <span className="font-bold text-red-400">116 at-risk projects</span>
+                </div>
+                <div className="p-3 flex justify-between items-center">
+                  <span className="font-bold text-white">Bihar</span>
+                  <span className="font-bold text-red-400">98 at-risk projects</span>
+                </div>
+                <div className="p-3 flex justify-between items-center">
+                  <span className="font-bold text-white">Odisha</span>
+                  <span className="font-bold text-amber-400">64 at-risk projects</span>
+                </div>
+                <div className="p-3 flex justify-between items-center">
+                  <span className="font-bold text-white">Karnataka</span>
+                  <span className="font-bold text-amber-400">51 at-risk projects</span>
+                </div>
               </div>
-              <div className="p-3 flex justify-between items-center">
-                <span className="font-bold text-white">Maharashtra</span>
-                <span className="font-bold text-red-400">142 at-risk projects</span>
-              </div>
-              <div className="p-3 flex justify-between items-center">
-                <span className="font-bold text-white">Uttar Pradesh</span>
-                <span className="font-bold text-red-400">116 at-risk projects</span>
-              </div>
-              <div className="p-3 flex justify-between items-center">
-                <span className="font-bold text-white">Bihar</span>
-                <span className="font-bold text-red-400">98 at-risk projects</span>
-              </div>
-              <div className="p-3 flex justify-between items-center">
-                <span className="font-bold text-white">Odisha</span>
-                <span className="font-bold text-amber-400">64 at-risk projects</span>
-              </div>
-              <div className="p-3 flex justify-between items-center">
-                <span className="font-bold text-white">Karnataka</span>
-                <span className="font-bold text-amber-400">51 at-risk projects</span>
+
+              {/* SECOND SUPPORTING INFRASTRUCTURE SURVEY VISUAL */}
+              <div className="relative rounded-xs overflow-hidden border border-slate-800 shadow-lg group font-mono text-xs">
+                <img
+                  src="https://images.unsplash.com/photo-1590496793929-36417d3117de?auto=format&fit=crop&w=800&q=80"
+                  alt="Infrastructure Corridor Aerial Survey"
+                  className="w-full h-32 object-cover object-center filter brightness-90 contrast-105 transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
+                <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[10px] text-slate-200">
+                  <span className="font-bold text-slate-100 uppercase tracking-wider">CADASTRAL FIELD SURVEY</span>
+                  <span className="text-blue-400 font-bold">&bull; SECTOR REGISTRY</span>
+                </div>
               </div>
             </div>
           </div>
