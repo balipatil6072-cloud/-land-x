@@ -59,7 +59,28 @@ export const Header: React.FC<HeaderProps> = ({
   const { title, breadcrumb } = getBreadcrumbTitle();
 
   return (
-    <header className="bg-white border-b border-slate-200 select-none sticky top-0 z-20 shadow-2xs font-sans w-full px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 sm:gap-4">
+    <div className="w-full flex flex-col sticky top-0 z-20 select-none font-sans">
+      {/* GOVT SYSTEM STATUS STRIP */}
+      <div className="w-full bg-slate-900 text-slate-300 text-[10px] font-mono py-1 px-3 sm:px-6 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center space-x-3">
+          <span className="flex items-center space-x-1.5 text-emerald-400 font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>● SYSTEM OPERATIONAL</span>
+          </span>
+          <span className="text-slate-700 hidden sm:inline">&bull;</span>
+          <span className="hidden sm:inline text-slate-400">LAST DATA SYNC: 01 SEP 2026 &bull; 23:42 IST</span>
+        </div>
+
+        <div className="flex items-center space-x-3 text-[9px] text-slate-400">
+          <span className="hidden md:inline">ACTIVE PROJECTS: <strong className="text-white font-mono">4,286</strong></span>
+          <span className="text-slate-700 hidden md:inline">&bull;</span>
+          <span className="hidden sm:inline">COVERAGE: <strong className="text-white font-mono">28 STATES &amp; UTs</strong></span>
+          <span className="text-slate-700 hidden sm:inline">&bull;</span>
+          <span className="text-blue-400 font-bold uppercase">🔒 SIH 2026 PROTOTYPE AUTH</span>
+        </div>
+      </div>
+
+      <header className="bg-white border-b border-slate-200 shadow-2xs font-sans w-full px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 sm:gap-4">
       {/* Left: Mobile Drawer Button + Breadcrumb */}
       <div className="flex items-center space-x-2.5">
         <button
@@ -230,6 +251,7 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
     </header>
-  );
+  </div>
+);
 };
 

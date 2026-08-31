@@ -231,10 +231,10 @@ export const CommandCenterPage: React.FC = () => {
           <div className="space-y-4">
             <div className="flex justify-between items-baseline border-b border-slate-300 pb-2">
               <h2 className="text-base font-mono font-bold text-slate-900 uppercase tracking-wider">
-                PRIORITY ACTIONS
+                PRIORITY ACTIONS (AI DELAY RISK ASSESSMENT)
               </h2>
-              <span className="text-xs text-slate-500 font-sans">
-                Ranked by predictive delay velocity &amp; impact
+              <span className="text-xs text-slate-500 font-mono">
+                Ranked by predictive delay velocity &amp; impact &bull; AI Decision Support
               </span>
             </div>
 
@@ -268,23 +268,35 @@ export const CommandCenterPage: React.FC = () => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-sans">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-slate-500 uppercase block">CURRENT RISK:</span>
+                      <span className="text-[10px] font-mono font-bold text-slate-500 uppercase block">AI DELAY RISK ASSESSMENT:</span>
                       <span className="text-xl font-bold text-red-700 font-mono">{item.currentRisk}% DELAY PROBABILITY</span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-slate-500 uppercase block">EXPECTED IMPACT:</span>
+                      <span className="text-[10px] font-mono font-bold text-slate-500 uppercase block">PREDICTED DELAY SLIP:</span>
                       <span className="text-sm font-bold text-slate-900 font-mono">{item.expectedImpact}</span>
                     </div>
 
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-slate-500 uppercase block">PRIMARY DELAY DRIVER:</span>
+                      <span className="text-[10px] font-mono font-bold text-slate-500 uppercase block">PRIMARY BOTTLENECK:</span>
                       <span className="font-semibold text-slate-900">{item.primaryDriver}</span>
                     </div>
                   </div>
 
+                  {/* Operational Traceability & Decision Support Note */}
+                  <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-xs flex flex-wrap items-center justify-between text-[11px] font-mono text-slate-600 gap-2">
+                    <div>
+                      <span className="text-[9px] font-bold text-blue-800 uppercase block">AI RECOMMENDATION:</span>
+                      <span className="font-bold text-slate-900 font-sans">{item.recommendedStep}</span>
+                    </div>
+                    <div className="text-[10px] text-slate-500 text-right">
+                      <span>ASSESSMENT GENERATED: 01 SEP 2026 &bull; 23:38 IST</span>
+                      <span className="block text-[9px] text-slate-400">STATUS: AWAITING OFFICER DECISION</span>
+                    </div>
+                  </div>
+
                   <div className="pt-3 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2">
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-slate-500 font-mono">
                       {user?.role === 'READ_ONLY'
                         ? 'Restricted to authorized operational officers.'
                         : 'Officer action required to prevent downstream corridor stoppage.'}
@@ -310,7 +322,7 @@ export const CommandCenterPage: React.FC = () => {
                         }}
                         className="px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white font-mono font-bold text-xs rounded-xs flex items-center space-x-1.5 transition-colors cursor-pointer"
                       >
-                        <span>TAKE ACTION &rarr;</span>
+                        <span>TAKE OFFICER ACTION &rarr;</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     )}
