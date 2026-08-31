@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import type { OutcomeVerification } from '../types';
 import {
   CheckCircle2,
@@ -7,10 +8,12 @@ import {
   Plus,
   FileCheck2,
   X,
+  Lock,
 } from 'lucide-react';
 
 export const InterventionCenterPage: React.FC = () => {
   const { verifyInterventionOutcome } = useApp();
+  const { user } = useAuth();
 
   const [selectedCaseDetail, setSelectedCaseDetail] = useState<any | null>(null);
 
@@ -68,10 +71,21 @@ export const InterventionCenterPage: React.FC = () => {
             <Filter className="w-3.5 h-3.5" />
             <span>Filters</span>
           </button>
-          <button className="px-4 py-1.5 bg-blue-800 hover:bg-blue-900 text-white font-bold rounded-xs flex items-center space-x-1 cursor-pointer shadow-xs">
-            <Plus className="w-3.5 h-3.5" />
-            <span>+ New Intervention</span>
-          </button>
+          {user?.role === 'READ_ONLY' ? (
+            <button
+              disabled={true}
+              title="Restricted to authorized operational officers."
+              className="px-4 py-1.5 bg-slate-100 text-slate-500 font-bold rounded-xs border border-slate-300 flex items-center space-x-1 cursor-not-allowed opacity-80"
+            >
+              <Lock className="w-3.5 h-3.5 text-slate-500" />
+              <span>+ New Intervention (Restricted)</span>
+            </button>
+          ) : (
+            <button className="px-4 py-1.5 bg-blue-800 hover:bg-blue-900 text-white font-bold rounded-xs flex items-center space-x-1 cursor-pointer shadow-xs">
+              <Plus className="w-3.5 h-3.5" />
+              <span>+ New Intervention</span>
+            </button>
+          )}
         </div>
       </div>
 

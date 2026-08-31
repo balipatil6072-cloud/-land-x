@@ -125,69 +125,103 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="relative" ref={menuRef}>
           <button
             onClick={() => setShowProfileMenu(!showProfileMenu)}
-            className="flex items-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white border border-slate-800 rounded-xs px-2.5 py-1 text-[11px] font-mono cursor-pointer transition-colors shadow-2xs"
+            className="flex items-center space-x-2.5 bg-slate-900 hover:bg-slate-800 text-white border border-slate-800 rounded-xs px-3 py-1.5 text-xs font-mono cursor-pointer transition-colors shadow-2xs"
           >
-            <div className="w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center font-bold text-[10px] text-white flex-shrink-0">
+            <div className="w-6 h-6 rounded-full bg-blue-700 flex items-center justify-center font-bold text-[11px] text-white flex-shrink-0 border border-blue-400/40">
               {user?.avatarInitials || 'GO'}
             </div>
             <div className="hidden sm:flex flex-col items-start leading-tight text-left">
-              <span className="font-bold text-[10px] uppercase truncate max-w-[120px]">
-                {user?.roleTitle || 'MONITORING OFFICER'}
+              <div className="flex items-center space-x-1.5">
+                <span className="font-bold text-[9px] uppercase tracking-wider text-slate-300">
+                  OFFICER WORKSPACE
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" title="AUTHENTICATED" />
+              </div>
+              <span className="font-bold text-[11px] text-white block truncate max-w-[140px]">
+                {user?.name || 'Rajesh V. Sharma'}
               </span>
-              <span className="text-[8px] text-slate-300 block truncate max-w-[120px]">
-                {user?.name || 'Government Operations'}
+              <span className="text-[9px] text-blue-300 block truncate max-w-[140px]">
+                {user?.roleTitle || 'National Administrator'}
               </span>
             </div>
-            <ChevronDown className="w-3 h-3 text-slate-400" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1" />
           </button>
 
           {/* OFFICER PROFILE DROPDOWN CARD */}
           {showProfileMenu && (
-            <div className="absolute right-0 mt-2 w-72 bg-white border border-slate-300 rounded-xs shadow-xl z-50 overflow-hidden font-sans animate-fadeIn">
+            <div className="absolute right-0 mt-2 w-80 bg-white border border-slate-300 rounded-xs shadow-xl z-50 overflow-hidden font-sans animate-fadeIn">
               {/* Profile Header */}
-              <div className="p-3.5 bg-slate-900 text-white space-y-1 font-mono">
+              <div className="p-4 bg-slate-900 text-white space-y-2 font-mono">
                 <div className="flex justify-between items-start">
                   <div className="space-y-0.5">
-                    <div className="font-bold text-xs">{user?.name}</div>
-                    <div className="text-[10px] text-blue-300">{user?.email}</div>
+                    <span className="text-[9px] font-bold text-blue-400 uppercase tracking-widest block">OFFICER PROFILE</span>
+                    <div className="font-bold text-sm text-white">{user?.name}</div>
+                    <div className="text-[10px] text-slate-300">{user?.roleTitle}</div>
                   </div>
-                  <span className="px-1.5 py-0.5 bg-blue-800 text-[9px] font-bold rounded-xs uppercase">
+                  <span className="px-2 py-0.5 bg-blue-800 text-[9px] font-bold rounded-xs uppercase border border-blue-600">
                     {user?.jurisdictionScope || 'INDIA'}
                   </span>
                 </div>
-                <div className="text-[9px] text-slate-400 border-t border-slate-800 pt-1 mt-1 flex justify-between">
-                  <span>Badge: {user?.badgeId || 'GOV-IN-8842'}</span>
-                  <span className="text-emerald-400 font-bold">Session Active</span>
+
+                <div className="text-[9px] text-slate-400 border-t border-slate-800 pt-2 flex justify-between items-center">
+                  <span>Badge ID: <strong className="text-slate-200">{user?.badgeId || 'GOV-IN-8842'}</strong></span>
+                  <span className="text-emerald-400 font-bold flex items-center space-x-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>AUTHENTICATED</span>
+                  </span>
                 </div>
               </div>
 
               {/* Department & Role Info */}
-              <div className="p-3 space-y-2 text-xs border-b border-slate-200 bg-slate-50 text-slate-700 font-mono">
+              <div className="p-3.5 space-y-2.5 text-xs border-b border-slate-200 bg-slate-50 text-slate-700 font-mono">
                 <div>
-                  <span className="text-[9px] font-bold text-slate-500 uppercase block">Department / Cell</span>
-                  <span className="text-[11px] font-bold text-slate-900">{user?.department}</span>
+                  <span className="text-[9px] font-bold text-slate-500 uppercase block">Department / Ministry</span>
+                  <span className="text-xs font-bold text-slate-900">{user?.department}</span>
                 </div>
-                {user?.state && (
+
+                <div className="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200">
                   <div>
-                    <span className="text-[9px] font-bold text-slate-500 uppercase block">State Jurisdiction</span>
-                    <span className="text-[11px] font-bold text-slate-900">{user.state} {user.district ? `(${user.district} District)` : ''}</span>
+                    <span className="text-[9px] font-bold text-slate-500 uppercase block">Jurisdiction Scope</span>
+                    <span className="text-xs font-bold text-slate-900">
+                      {user?.state ? `${user.state} ${user.district ? `(${user.district})` : ''}` : (user?.jurisdictionScope || 'INDIA')}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-slate-500 uppercase block">Access Level</span>
+                    <span className="text-xs font-bold text-blue-800">{user?.role}</span>
+                  </div>
+                </div>
+
+                {user?.assignedProjects && user.assignedProjects.length > 0 && (
+                  <div className="pt-1 border-t border-slate-200">
+                    <span className="text-[9px] font-bold text-slate-500 uppercase block">Assigned Project Corridors</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {user.assignedProjects.map((p) => (
+                        <span key={p} className="px-1.5 py-0.5 bg-blue-100 text-blue-900 text-[10px] font-bold rounded-xs border border-blue-200">
+                          {p}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
 
               {/* Security Indicator */}
-              <div className="p-2.5 px-3 flex items-center space-x-1.5 text-[10px] font-mono text-slate-500 bg-white">
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-600 flex-shrink-0" />
-                <span>SIH2026 Prototype Authentication</span>
+              <div className="p-2.5 px-3.5 flex items-center justify-between text-[10px] font-mono text-slate-600 bg-white border-b border-slate-200">
+                <div className="flex items-center space-x-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
+                  <span className="font-bold text-slate-700">● SECURE SESSION ACTIVE</span>
+                </div>
+                <span className="text-slate-400">SIH 2026</span>
               </div>
 
               {/* Sign Out Button */}
-              <div className="p-2 bg-slate-100 border-t border-slate-200">
+              <div className="p-2.5 bg-slate-100">
                 <button
                   onClick={handleSignOut}
-                  className="w-full px-3 py-2 bg-red-50 hover:bg-red-100 text-red-800 border border-red-200 rounded-xs text-xs font-mono font-bold flex items-center justify-center space-x-2 cursor-pointer transition-colors"
+                  className="w-full py-2 bg-red-700 hover:bg-red-800 text-white rounded-xs text-xs font-mono font-bold flex items-center justify-center space-x-2 cursor-pointer transition-colors shadow-2xs"
                 >
-                  <LogOut className="w-3.5 h-3.5 text-red-700" />
+                  <LogOut className="w-3.5 h-3.5" />
                   <span>SIGN OUT OFFICER</span>
                 </button>
               </div>

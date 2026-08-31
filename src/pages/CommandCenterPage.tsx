@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Lock } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export const CommandCenterPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   // Secondary Contextual View Navigation State: 'overview' | 'trends' | 'drivers' | 'summary'
   const [currentView, setCurrentView] = useState<'overview' | 'trends' | 'drivers' | 'summary'>('overview');
+
+  // Compute Role-Based Dashboard Title Context
+  const getDashboardTitle = () => {
+    if (user?.role === 'NATIONAL_ADMIN') return 'NATIONAL LAND ACQUISITION SITUATION — National Overview';
+    if (user?.role === 'STATE_OFFICER') return `${(user?.state || 'MAHARASHTRA').toUpperCase()} STATE LAND ACQUISITION SITUATION — State Overview`;
+    if (user?.role === 'DISTRICT_OFFICER') return `${(user?.district || 'NASHIK').toUpperCase()} DISTRICT LAND ACQUISITION SITUATION — District Overview`;
+    if (user?.role === 'PROJECT_OFFICER') return 'ASSIGNED PROJECT PORTFOLIO SITUATION — Project Operations';
+    if (user?.role === 'MONITORING_OFFICER') return 'NATIONAL LAND ACQUISITION SITUATION — Monitoring View';
+    if (user?.role === 'READ_ONLY') return 'GOVERNANCE AUDIT & MONITORING VIEW — Read-Only Access';
+    return 'NATIONAL LAND ACQUISITION SITUATION';
+  };
 
   // Priority Actions Data
   const priorityActions = [
@@ -62,22 +75,62 @@ export const CommandCenterPage: React.FC = () => {
 
   return (
     <div className="w-full space-y-6 pb-12 font-sans text-slate-900 antialiased">
+      {/* INSTITUTIONAL OFFICER CONTEXT BANNER */}
+      <div className="bg-slate-900 text-white border border-slate-800 rounded-xs p-3 px-4 font-mono text-xs shadow-2xs flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center space-x-3">
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
+          <div>
+            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">AUTHORIZED OFFICER</span>
+            <span className="font-bold text-white text-xs">
+              {user?.name || 'Rajesh V. Sharma'} &bull; <span className="text-blue-300 font-normal">{user?.roleTitle || 'National Administrator'}</span>
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-4 text-[11px]">
+          <div>
+            <span className="text-[9px] text-slate-400 font-bold uppercase block">DEPARTMENT / CELL</span>
+            <span className="font-bold text-slate-200">{user?.department || 'Ministry of Infrastructure'}</span>
+          </div>
+
+          <div>
+            <span className="text-[9px] text-slate-400 font-bold uppercase block">JURISDICTION</span>
+            <span className="font-bold text-slate-200">
+              {user?.state ? `${user.state} ${user.district ? `(${user.district} Dist)` : ''}` : (user?.jurisdictionScope || 'INDIA')}
+            </span>
+          </div>
+
+          <div>
+            <span className="text-[9px] text-slate-400 font-bold uppercase block">ACCESS LEVEL</span>
+            <span className={`font-bold ${user?.role === 'READ_ONLY' ? 'text-amber-400' : 'text-blue-400'}`}>
+              {user?.role === 'READ_ONLY' ? 'VIEW ONLY' : `${user?.role || 'FULL OPERATIONAL'}`}
+            </span>
+          </div>
+
+          <div className="hidden lg:block text-right border-l border-slate-800 pl-4">
+            <span className="text-[9px] bg-blue-900/80 text-blue-200 px-2 py-0.5 rounded-xs font-bold uppercase border border-blue-700">
+              ● SECURE SESSION ACTIVE
+            </span>
+          </div>
+        </div>
+      </div>
+
       {/* 6. PAGE HEADER & SECONDARY VIEW TABS */}
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-slate-300 pb-3 gap-2">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 font-mono">
-              NATIONAL SITUATION
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 font-mono">
+              {getDashboardTitle()}
             </h1>
-            <p className="text-sm text-slate-600 mt-1 font-sans">
-              National overview of land-acquisition risk and project progress monitoring.
+            <p className="text-xs text-slate-600 mt-1 font-sans">
+              Operational situation room &bull; Land-acquisition risk and progress monitoring for authorized officers.
             </p>
           </div>
 
           <div className="text-right font-mono text-xs text-slate-600 font-bold">
             <span>28 AUG 2026</span>
             <span className="mx-2 text-slate-300">|</span>
-            <span>Last updated 12:42</span>
+            <span>Last updated 12:42 IST</span>
           </div>
         </div>
 
@@ -193,10 +246,19 @@ export const CommandCenterPage: React.FC = () => {
                   className="p-5 bg-white border border-slate-300 rounded-xs hover:border-slate-500 transition-colors cursor-pointer space-y-4 shadow-2xs"
                 >
                   <div className="flex flex-wrap items-baseline justify-between border-b border-slate-200 pb-3 gap-2">
-                    <div className="flex items-center space-x-3 text-base font-bold">
+                    <div className="flex items-center space-x-3 text-base font-bold flex-wrap gap-y-1">
                       <span className="text-blue-800 font-mono text-lg">{item.id}</span>
                       <span className="text-slate-900 font-sans">{item.name}</span>
                       <span className="text-xs font-mono text-slate-500">({item.location})</span>
+                      <span className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-xs uppercase ${
+                        user?.role === 'READ_ONLY'
+                          ? 'bg-slate-100 text-slate-700 border border-slate-300'
+                          : user?.role === 'PROJECT_OFFICER'
+                          ? 'bg-emerald-50 text-emerald-900 border border-emerald-300'
+                          : 'bg-blue-50 text-blue-900 border border-blue-200'
+                      }`}>
+                        {user?.role === 'READ_ONLY' ? 'ACCESS: VIEW ONLY' : (user?.role === 'PROJECT_OFFICER' ? 'ACCESS: ASSIGNED TO OFFICER' : 'ACCESS: AUTHORIZED')}
+                      </span>
                     </div>
 
                     <div className="text-xs font-mono text-red-700 font-bold">
@@ -221,21 +283,37 @@ export const CommandCenterPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between flex-wrap gap-2">
                     <span className="text-xs text-slate-500">
-                      Officer action required to prevent downstream corridor stoppage.
+                      {user?.role === 'READ_ONLY'
+                        ? 'Restricted to authorized operational officers.'
+                        : 'Officer action required to prevent downstream corridor stoppage.'}
                     </span>
 
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(`/projects/${item.id}`);
-                      }}
-                      className="px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white font-mono font-bold text-xs rounded-xs flex items-center space-x-1.5 transition-colors cursor-pointer"
-                    >
-                      <span>{item.recommendedStep}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
+                    {user?.role === 'READ_ONLY' ? (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/projects/${item.id}`);
+                        }}
+                        title="Restricted to authorized operational officers."
+                        className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-mono font-bold text-xs rounded-xs flex items-center space-x-1.5 cursor-pointer border border-slate-300"
+                      >
+                        <Lock className="w-3.5 h-3.5 text-slate-500" />
+                        <span>VIEW ONLY (READ-ONLY)</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/projects/${item.id}`);
+                        }}
+                        className="px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white font-mono font-bold text-xs rounded-xs flex items-center space-x-1.5 transition-colors cursor-pointer"
+                      >
+                        <span>TAKE ACTION &rarr;</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

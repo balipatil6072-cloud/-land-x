@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import {
   MapPin,
   Share2,
@@ -10,12 +11,14 @@ import {
   Clock,
   ShieldCheck,
   FileCheck,
+  Lock,
 } from 'lucide-react';
 
 export const ProjectDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { projects, dispatchIntervention, logAuditEvent } = useApp();
+  const { user } = useAuth();
 
   const [actionDispatched, setActionDispatched] = useState(false);
 
@@ -40,8 +43,6 @@ export const ProjectDetailPage: React.FC = () => {
     { feature: 'Historical corridor delay pattern', weight: '7% weight', level: 'Low' },
   ];
 
-
-
   // Recent Changes Audit Log
   const recentChanges = [
     { item: 'Compensation processing', detail: '18 unresolved bank records', trend: '↑ increased', isBad: true },
@@ -51,6 +52,8 @@ export const ProjectDetailPage: React.FC = () => {
 
   // Dispatch Intervention Handler
   const handleExecuteIntervention = () => {
+    if (user?.role === 'READ_ONLY') return;
+
     dispatchIntervention({
       projectId: project.id,
       projectName: project.name,
@@ -59,7 +62,7 @@ export const ProjectDetailPage: React.FC = () => {
       actionName: 'Beneficiary-Bank Reconciliation Camp',
       recommendedAction: 'Deploy Tehsil-level SLAO bank account reconciliation drive',
       primaryDriver: 'Compensation',
-      owner: 'District Land Acquisition Cell',
+      owner: `${user?.name || 'Authorized Officer'} (${user?.roleTitle || 'Operational Officer'})`,
       priority: 'P1',
       dueDays: 3,
       beforeRiskPercent: 92,
@@ -74,8 +77,8 @@ export const ProjectDetailPage: React.FC = () => {
       projectId: project.id,
       actionType: 'INTERVENTION_DISPATCHED',
       actionName: 'Bank Reconciliation Camp Dispatched',
-      actor: 'Monitoring Officer',
-      details: `Officer approved and dispatched beneficiary reconciliation camp for ${project.id}.`,
+      actor: `${user?.name || 'Rajesh V. Sharma'} (${user?.roleTitle || 'National Administrator'})`,
+      details: `Officer ${user?.name} approved and dispatched beneficiary reconciliation camp for ${project.id}.`,
       beforeRisk: 92,
       afterRisk: 65,
     });
@@ -133,10 +136,19 @@ export const ProjectDetailPage: React.FC = () => {
         {/* Project Meta Banner */}
         <div className="p-4 bg-white border border-slate-300 rounded-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 flex-wrap gap-y-1">
               <span className="text-xl font-bold font-mono text-blue-800">{project.id}</span>
               <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-100 text-red-800 border border-red-200 uppercase">
                 CRITICAL RISK
+              </span>
+              <span className={`px-2 py-0.5 text-[10px] font-mono font-bold rounded-xs uppercase ${
+                user?.role === 'READ_ONLY'
+                  ? 'bg-slate-100 text-slate-700 border border-slate-300'
+                  : user?.assignedProjects?.includes(project.id)
+                  ? 'bg-emerald-50 text-emerald-900 border border-emerald-300'
+                  : 'bg-blue-50 text-blue-900 border border-blue-200'
+              }`}>
+                {user?.role === 'READ_ONLY' ? 'ACCESS: VIEW ONLY' : (user?.assignedProjects?.includes(project.id) ? 'ACCESS: ASSIGNED TO OFFICER' : 'ACCESS: AUTHORIZED')}
               </span>
             </div>
             <h2 className="text-base font-bold text-slate-900 mt-0.5">{project.name}</h2>
@@ -423,14 +435,23 @@ export const ProjectDetailPage: React.FC = () => {
                   <span className="text-xs text-slate-500 font-mono">Target Action SLA: 3 Days</span>
                 )}
 
-                {!actionDispatched && (
+                {!actionDispatched && user?.role === 'READ_ONLY' ? (
+                  <button
+                    disabled={true}
+                    title="Restricted to authorized operational officers."
+                    className="px-6 py-2.5 bg-slate-100 border border-slate-300 text-slate-500 font-mono font-bold text-xs rounded-xs cursor-not-allowed flex items-center space-x-1.5 opacity-80"
+                  >
+                    <Lock className="w-3.5 h-3.5 text-slate-500" />
+                    <span>VIEW ONLY (Restricted)</span>
+                  </button>
+                ) : !actionDispatched ? (
                   <button
                     onClick={handleExecuteIntervention}
                     className="px-6 py-2.5 bg-blue-800 hover:bg-blue-900 text-white font-mono font-bold text-xs rounded-xs cursor-pointer shadow-2xs transition-colors"
                   >
                     Investigate &amp; Dispatch Intervention &rarr;
                   </button>
-                )}
+                ) : null}
               </div>
             </div>
           </div>

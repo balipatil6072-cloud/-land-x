@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Filter, ArrowUpDown, Plus } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import { calculateProjectRisk } from '../services/predictionService';
 import { AddProjectModal } from '../components/AddProjectModal';
 
@@ -20,6 +21,7 @@ export const ProjectExplorerPage: React.FC<ProjectExplorerPageProps> = ({
 }) => {
   const navigate = useNavigate();
   const { projects } = useApp();
+  const { user } = useAuth();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -381,8 +383,19 @@ export const ProjectExplorerPage: React.FC<ProjectExplorerPageProps> = ({
               {sortedProjects.map((project) => (
                 <tr key={project.id} className="hover:bg-slate-50 transition-colors font-medium">
                   <td className="py-3 px-4">
-                    <div className="font-bold text-slate-900 font-mono text-xs">{project.id}</div>
-                    <div className="text-slate-700 text-xs font-sans truncate max-w-xs">{project.name}</div>
+                    <div className="flex items-center space-x-2">
+                      <span className="font-bold text-slate-900 font-mono text-xs">{project.id}</span>
+                      <span className={`px-1.5 py-0.2 text-[9px] font-mono font-bold rounded-xs uppercase ${
+                        user?.role === 'READ_ONLY'
+                          ? 'bg-slate-100 text-slate-600 border border-slate-300'
+                          : user?.assignedProjects?.includes(project.id)
+                          ? 'bg-emerald-50 text-emerald-900 border border-emerald-300'
+                          : 'bg-blue-50 text-blue-900 border border-blue-200'
+                      }`}>
+                        {user?.role === 'READ_ONLY' ? 'VIEW ONLY' : (user?.assignedProjects?.includes(project.id) ? 'ASSIGNED' : 'AUTHORIZED')}
+                      </span>
+                    </div>
+                    <div className="text-slate-700 text-xs font-sans truncate max-w-xs mt-0.5">{project.name}</div>
                   </td>
                   <td className="py-3 px-4 text-slate-700 font-mono text-[11px]">
                     {project.district}, {project.state}
