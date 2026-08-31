@@ -36,6 +36,62 @@ export const LandingPage: React.FC = () => {
   const [videoError, setVideoError] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
+  // About KSHETRA Infrastructure Visual Carousel State
+  const [aboutSlide, setAboutSlide] = useState(0);
+  const [aboutCarouselPaused, setAboutCarouselPaused] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(0);
+
+  const aboutSlides = [
+    {
+      id: 1,
+      tag: 'LAND ACQUISITION',
+      badge: 'NATIONAL INFRASTRUCTURE INTELLIGENCE',
+      title: '787.52 HECTARES LAND ACQUISITION',
+      subtitle: 'Madurantakam Corridor land parcels identified for acquisition',
+      image: '/images/about-carousel-1.jpg',
+    },
+    {
+      id: 2,
+      tag: 'PROJECT MONITORING',
+      badge: 'INFRASTRUCTURE DEVELOPMENT',
+      title: 'EXPRESSWAY CONSTRUCTION CORRIDOR',
+      subtitle: 'Active corridor earthwork & highway alignment assessment',
+      image: '/images/about-carousel-2.jpg',
+    },
+    {
+      id: 3,
+      tag: 'FIELD VERIFICATION',
+      badge: 'CADASTRAL LAND SURVEY',
+      title: 'FIELD SURVEY & TOTAL STATION MEASUREMENT',
+      subtitle: 'SLAO officers verifying land boundary & highway alignment',
+      image: '/images/about-carousel-3.jpg',
+    },
+    {
+      id: 4,
+      tag: 'PROJECT DEVELOPMENT',
+      badge: 'CORRIDOR ALIGNMENT EXCAVATION',
+      title: 'MAJOR INFRASTRUCTURE EXCAVATION',
+      subtitle: 'Active land parcel excavation monitored against SLA schedule',
+      image: '/images/about-carousel-4.jpg',
+    },
+    {
+      id: 5,
+      tag: 'LAND & PROJECT PLANNING',
+      badge: 'CADASTRAL PARCEL ALIGNMENT',
+      title: 'AERIAL LAND PARCEL SURVEYING',
+      subtitle: 'Agricultural land parcel boundaries & corridor right-of-way',
+      image: '/images/about-carousel-5.png',
+    },
+  ];
+
+  useEffect(() => {
+    if (aboutCarouselPaused) return;
+    const interval = setInterval(() => {
+      setAboutSlide((prev) => (prev === aboutSlides.length - 1 ? 0 : prev + 1));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [aboutCarouselPaused, aboutSlides.length]);
+
   const handleNav = (targetPath: string) => {
     if (isAuthenticated) {
       navigate(targetPath);
@@ -484,33 +540,89 @@ export const LandingPage: React.FC = () => {
               </div>
             </div>
 
-            {/* RIGHT COLUMN: HIGH-QUALITY INFRASTRUCTURE CORRIDOR VISUAL WITH SYSTEM OVERLAY */}
+            {/* RIGHT COLUMN: REPLACED VISUAL AREA WITH LARGE INFRASTRUCTURE IMAGE CAROUSEL */}
             <div className="lg:col-span-6 relative">
-              <div className="relative rounded-xs overflow-hidden border border-slate-800 shadow-2xl group">
-                <img
-                  src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80"
-                  alt="Indian Infrastructure Highway Corridor"
-                  className="w-full h-80 lg:h-96 object-cover object-center filter brightness-90 contrast-105 transition-transform duration-700 group-hover:scale-105"
-                />
-                {/* Subtle Dark Navy Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+              <div
+                className="relative rounded-xs overflow-hidden border border-slate-800 shadow-2xl group w-full h-[280px] sm:h-[340px] lg:h-[420px] font-sans select-none"
+                onMouseEnter={() => setAboutCarouselPaused(true)}
+                onMouseLeave={() => setAboutCarouselPaused(false)}
+                onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
+                onTouchEnd={(e) => {
+                  const touchEndX = e.changedTouches[0].clientX;
+                  if (touchStartX - touchEndX > 40) {
+                    setAboutSlide((prev) => (prev === aboutSlides.length - 1 ? 0 : prev + 1));
+                  } else if (touchEndX - touchStartX > 40) {
+                    setAboutSlide((prev) => (prev === 0 ? aboutSlides.length - 1 : prev - 1));
+                  }
+                }}
+              >
+                {aboutSlides.map((slide, idx) => (
+                  <div
+                    key={slide.id}
+                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                      aboutSlide === idx ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
+                    }`}
+                  >
+                    <img
+                      src={slide.image}
+                      alt={slide.title}
+                      loading={idx === 0 ? 'eager' : 'lazy'}
+                      className="w-full h-full object-cover object-center filter brightness-95 contrast-105"
+                    />
+                    {/* Subtle Dark Navy Gradient Overlay (~75% photo visibility, ~25% overlay) */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
 
-                {/* System Intelligence Overlay Badge */}
-                <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-sm border border-slate-700/80 p-3 rounded-xs font-mono text-xs text-white shadow-xl flex items-center justify-between">
-                  <div>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-[9px] text-blue-400 font-bold uppercase tracking-wider">PROJECT INTELLIGENCE</span>
-                      <span className="text-[10px] bg-blue-900/80 text-blue-200 px-1.5 py-0.2 rounded-xs border border-blue-700">LA-1842</span>
+                    {/* Small Professional Lower-Left Information Overlay */}
+                    <div className="absolute bottom-3.5 left-3.5 right-3.5 bg-slate-900/85 backdrop-blur-xs border border-slate-700/80 p-2.5 rounded-xs font-mono text-xs text-white shadow-xl flex items-center justify-between z-20">
+                      <div className="space-y-0.5">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-[9px] text-blue-400 font-bold uppercase tracking-wider">{slide.tag}</span>
+                          <span className="text-[9px] text-slate-400 font-normal">&bull; {slide.badge}</span>
+                        </div>
+                        <div className="font-bold text-slate-100 text-xs font-sans tracking-tight">{slide.title}</div>
+                        <div className="text-[10px] text-slate-300 font-sans leading-tight">{slide.subtitle}</div>
+                      </div>
+                      <div className="text-right flex-shrink-0 ml-2 hidden sm:block">
+                        <span className="text-[8px] text-slate-400 uppercase font-bold block">KSHETRA RADAR</span>
+                        <span className="text-emerald-400 font-bold text-[9px] flex items-center space-x-1 justify-end">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <span>ACTIVE</span>
+                        </span>
+                      </div>
                     </div>
-                    <div className="font-bold text-slate-100 mt-0.5 font-sans">Infrastructure Corridor Alignment</div>
-                    <div className="text-[10px] text-slate-400 font-mono">Nashik, Maharashtra &bull; Surveyed Sector 4B</div>
                   </div>
-                  <div className="text-right flex-shrink-0">
-                    <span className="text-[9px] text-slate-400 uppercase font-bold block">STATUS</span>
-                    <span className="text-emerald-400 font-bold text-[10px] flex items-center space-x-1 justify-end">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>ACTIVE MONITORING</span>
-                    </span>
+                ))}
+
+                {/* Vertically Centered Left / Right Manual Navigation Buttons */}
+                <button
+                  onClick={() => setAboutSlide((prev) => (prev === 0 ? aboutSlides.length - 1 : prev - 1))}
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 z-30 p-2 bg-slate-900/80 hover:bg-slate-900 text-white border border-slate-700/80 rounded-xs font-mono text-xs cursor-pointer transition-colors shadow-lg flex items-center justify-center opacity-85 hover:opacity-100"
+                  aria-label="Previous Image"
+                >
+                  <span className="text-sm font-bold">&larr;</span>
+                </button>
+                <button
+                  onClick={() => setAboutSlide((prev) => (prev === aboutSlides.length - 1 ? 0 : prev + 1))}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 z-30 p-2 bg-slate-900/80 hover:bg-slate-900 text-white border border-slate-700/80 rounded-xs font-mono text-xs cursor-pointer transition-colors shadow-lg flex items-center justify-center opacity-85 hover:opacity-100"
+                  aria-label="Next Image"
+                >
+                  <span className="text-sm font-bold">&rarr;</span>
+                </button>
+
+                {/* Slide Indicator Bar (01 / 05 & Dots) */}
+                <div className="absolute top-3 right-3 z-30 flex items-center space-x-2 font-mono text-[10px] text-slate-300 bg-slate-900/85 px-2.5 py-1 rounded-xs border border-slate-800 backdrop-blur-xs">
+                  <span className="font-bold text-white">0{aboutSlide + 1} / 05</span>
+                  <div className="flex items-center space-x-1">
+                    {aboutSlides.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setAboutSlide(idx)}
+                        className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                          aboutSlide === idx ? 'bg-blue-500 w-3' : 'bg-slate-500 w-1.5 hover:bg-slate-400'
+                        }`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                      />
+                    ))}
                   </div>
                 </div>
               </div>
