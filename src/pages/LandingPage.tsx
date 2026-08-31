@@ -2,8 +2,9 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import L from 'leaflet';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin, Lock } from 'lucide-react';
 import { LandXLogo } from '../components/common/LandXLogo';
+import { useAuth } from '../context/AuthContext';
 
 // Restrained Marker Icon
 const redIcon = L.divIcon({
@@ -15,10 +16,19 @@ const redIcon = L.divIcon({
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  const handleNav = (targetPath: string) => {
+    if (isAuthenticated) {
+      navigate(targetPath);
+    } else {
+      navigate(`/login?redirect=${encodeURIComponent(targetPath)}`);
+    }
+  };
 
   useEffect(() => {
     // Development diagnostic for visual inspection & network trace
@@ -164,34 +174,44 @@ export const LandingPage: React.FC = () => {
             <LandXLogo size="lg" lightMode={true} showWordmark={true} />
           </div>
 
-          <nav className="hidden md:flex items-center space-x-8 text-xs font-semibold text-slate-300">
+          <nav className="hidden md:flex items-center space-x-6 text-xs font-semibold text-slate-300">
             <button onClick={() => navigate('/')} className="text-white transition-colors cursor-pointer font-bold border-b border-blue-500 pb-0.5">
               Home
             </button>
-            <button onClick={() => navigate('/command-center')} className="hover:text-white transition-colors cursor-pointer">
+            <button onClick={() => handleNav('/command-center')} className="hover:text-white transition-colors cursor-pointer">
               Situation
             </button>
-            <button onClick={() => navigate('/national-map')} className="hover:text-white transition-colors cursor-pointer">
+            <button onClick={() => handleNav('/national-map')} className="hover:text-white transition-colors cursor-pointer">
               Map
             </button>
-            <button onClick={() => navigate('/projects')} className="hover:text-white transition-colors cursor-pointer">
+            <button onClick={() => handleNav('/projects')} className="hover:text-white transition-colors cursor-pointer">
               Projects
             </button>
-            <button onClick={() => navigate('/early-warning')} className="hover:text-white transition-colors cursor-pointer">
+            <button onClick={() => handleNav('/early-warning')} className="hover:text-white transition-colors cursor-pointer">
               Warnings
             </button>
-            <button onClick={() => navigate('/interventions')} className="hover:text-white transition-colors cursor-pointer">
+            <button onClick={() => handleNav('/interventions')} className="hover:text-white transition-colors cursor-pointer">
               Actions
             </button>
           </nav>
 
-          <button
-            onClick={() => navigate('/command-center')}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded text-xs font-bold shadow-md transition-all cursor-pointer flex items-center space-x-1.5"
-          >
-            <span>ENTER NATIONAL SITUATION</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => navigate(isAuthenticated ? '/command-center' : '/login')}
+              className="px-3.5 py-1.5 bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded-xs text-xs font-mono font-bold transition-all cursor-pointer flex items-center space-x-1.5 shadow-sm"
+            >
+              <Lock className="w-3.5 h-3.5 text-blue-400" />
+              <span>{isAuthenticated ? 'OFFICER WORKSPACE →' : 'GOVERNMENT OFFICER LOGIN →'}</span>
+            </button>
+
+            <button
+              onClick={() => handleNav('/command-center')}
+              className="hidden sm:flex px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xs text-xs font-bold shadow-md transition-all cursor-pointer items-center space-x-1.5"
+            >
+              <span>ENTER NATIONAL SITUATION</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
         </header>
 
         {/* HERO MAIN CONTENT AREA */}
@@ -213,7 +233,7 @@ export const LandingPage: React.FC = () => {
 
             <div className="pt-2 flex flex-col sm:flex-row items-center gap-4">
               <button
-                onClick={() => navigate('/command-center')}
+                onClick={() => handleNav('/command-center')}
                 className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white rounded font-extrabold text-xs tracking-wider uppercase shadow-xl shadow-blue-600/30 flex items-center justify-center space-x-2 transition-all cursor-pointer"
               >
                 <span>ENTER NATIONAL SITUATION</span>
@@ -221,7 +241,7 @@ export const LandingPage: React.FC = () => {
               </button>
 
               <button
-                onClick={() => navigate('/national-map')}
+                onClick={() => handleNav('/national-map')}
                 className="w-full sm:w-auto px-8 py-4 bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700 rounded font-bold text-xs tracking-wider uppercase flex items-center justify-center space-x-2 transition-all cursor-pointer"
               >
                 <MapPin className="w-4 h-4 text-blue-400" />
@@ -533,13 +553,13 @@ export const LandingPage: React.FC = () => {
 
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 text-xs font-mono font-bold">
             <button
-              onClick={() => navigate('/command-center')}
+              onClick={() => handleNav('/command-center')}
               className="w-full sm:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xs cursor-pointer shadow-md transition-colors"
             >
               View National Situation &rarr;
             </button>
             <button
-              onClick={() => navigate('/projects')}
+              onClick={() => handleNav('/projects')}
               className="w-full sm:w-auto px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xs cursor-pointer transition-colors"
             >
               Explore Projects &rarr;
