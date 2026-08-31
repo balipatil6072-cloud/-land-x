@@ -38,7 +38,7 @@ export const LandingPage: React.FC = () => {
 
   // About KSHETRA Infrastructure Visual Carousel State
   const [aboutSlide, setAboutSlide] = useState(0);
-  const [aboutCarouselPaused, setAboutCarouselPaused] = useState(false);
+  const [resetTimerToken, setResetTimerToken] = useState(0);
   const [touchStartX, setTouchStartX] = useState(0);
 
   const aboutSlides = [
@@ -84,13 +84,30 @@ export const LandingPage: React.FC = () => {
     },
   ];
 
+  // Handlers to update slide and reset 2-second playback timer
+  const handleNextAboutSlide = () => {
+    setAboutSlide((prev) => (prev === aboutSlides.length - 1 ? 0 : prev + 1));
+    setResetTimerToken((prev) => prev + 1);
+  };
+
+  const handlePrevAboutSlide = () => {
+    setAboutSlide((prev) => (prev === 0 ? aboutSlides.length - 1 : prev - 1));
+    setResetTimerToken((prev) => prev + 1);
+  };
+
+  const handleSelectAboutSlide = (index: number) => {
+    setAboutSlide(index);
+    setResetTimerToken((prev) => prev + 1);
+  };
+
+  // Continuous 2-Second Automatic Playback Loop
   useEffect(() => {
-    if (aboutCarouselPaused) return;
     const interval = setInterval(() => {
       setAboutSlide((prev) => (prev === aboutSlides.length - 1 ? 0 : prev + 1));
-    }, 5000);
+    }, 2000); // Exactly 2 seconds per image
+
     return () => clearInterval(interval);
-  }, [aboutCarouselPaused, aboutSlides.length]);
+  }, [resetTimerToken, aboutSlides.length]);
 
   const handleNav = (targetPath: string) => {
     if (isAuthenticated) {
@@ -544,22 +561,20 @@ export const LandingPage: React.FC = () => {
             <div className="lg:col-span-6 relative">
               <div
                 className="relative rounded-xs overflow-hidden border border-slate-800 shadow-2xl group w-full h-[280px] sm:h-[340px] lg:h-[420px] font-sans select-none"
-                onMouseEnter={() => setAboutCarouselPaused(true)}
-                onMouseLeave={() => setAboutCarouselPaused(false)}
                 onTouchStart={(e) => setTouchStartX(e.touches[0].clientX)}
                 onTouchEnd={(e) => {
                   const touchEndX = e.changedTouches[0].clientX;
                   if (touchStartX - touchEndX > 40) {
-                    setAboutSlide((prev) => (prev === aboutSlides.length - 1 ? 0 : prev + 1));
+                    handleNextAboutSlide();
                   } else if (touchEndX - touchStartX > 40) {
-                    setAboutSlide((prev) => (prev === 0 ? aboutSlides.length - 1 : prev - 1));
+                    handlePrevAboutSlide();
                   }
                 }}
               >
                 {aboutSlides.map((slide, idx) => (
                   <div
                     key={slide.id}
-                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                    className={`absolute inset-0 transition-opacity duration-600 ease-in-out ${
                       aboutSlide === idx ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
                     }`}
                   >
@@ -595,14 +610,14 @@ export const LandingPage: React.FC = () => {
 
                 {/* Vertically Centered Left / Right Manual Navigation Buttons */}
                 <button
-                  onClick={() => setAboutSlide((prev) => (prev === 0 ? aboutSlides.length - 1 : prev - 1))}
+                  onClick={handlePrevAboutSlide}
                   className="absolute left-2.5 top-1/2 -translate-y-1/2 z-30 p-2 bg-slate-900/80 hover:bg-slate-900 text-white border border-slate-700/80 rounded-xs font-mono text-xs cursor-pointer transition-colors shadow-lg flex items-center justify-center opacity-85 hover:opacity-100"
                   aria-label="Previous Image"
                 >
                   <span className="text-sm font-bold">&larr;</span>
                 </button>
                 <button
-                  onClick={() => setAboutSlide((prev) => (prev === aboutSlides.length - 1 ? 0 : prev + 1))}
+                  onClick={handleNextAboutSlide}
                   className="absolute right-2.5 top-1/2 -translate-y-1/2 z-30 p-2 bg-slate-900/80 hover:bg-slate-900 text-white border border-slate-700/80 rounded-xs font-mono text-xs cursor-pointer transition-colors shadow-lg flex items-center justify-center opacity-85 hover:opacity-100"
                   aria-label="Next Image"
                 >
@@ -616,7 +631,7 @@ export const LandingPage: React.FC = () => {
                     {aboutSlides.map((_, idx) => (
                       <button
                         key={idx}
-                        onClick={() => setAboutSlide(idx)}
+                        onClick={() => handleSelectAboutSlide(idx)}
                         className={`h-1.5 rounded-full transition-all cursor-pointer ${
                           aboutSlide === idx ? 'bg-blue-500 w-3' : 'bg-slate-500 w-1.5 hover:bg-slate-400'
                         }`}
