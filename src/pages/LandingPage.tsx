@@ -184,12 +184,12 @@ export const LandingPage: React.FC = () => {
           </video>
         )}
 
-        {/* Layer 2: Dark Navy Overlay (62-63% Overlay / 37-38% Net Video Visibility) */}
+        {/* Layer 2: Dark Navy Overlay (68% Overlay / 32% Net Video Visibility) */}
         <div
           className="absolute inset-0 z-20 pointer-events-none"
           style={{
             background:
-              'linear-gradient(135deg, rgba(3,8,22,0.63) 0%, rgba(5,14,36,0.58) 50%, rgba(3,8,22,0.64) 100%)',
+              'linear-gradient(135deg, rgba(3,8,22,0.68) 0%, rgba(5,14,36,0.66) 50%, rgba(3,8,22,0.70) 100%)',
           }}
         />
 
