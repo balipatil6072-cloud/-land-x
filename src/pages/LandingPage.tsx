@@ -493,6 +493,198 @@ export const LandingPage: React.FC = () => {
           </div>
         </section>
 
+        {/* NEW SECTION: NATIONAL LAND ACQUISITION INTELLIGENCE (LIGHT SLATE SLAB) */}
+        <div className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-slate-100 border-y border-slate-300 py-16 px-4 md:px-12 text-slate-900 font-sans my-4">
+          <div className="max-w-7xl mx-auto space-y-10 text-left">
+            {/* SECTION HEADER */}
+            <div className="max-w-3xl space-y-2">
+              <span className="text-xs font-mono font-bold text-blue-800 uppercase tracking-widest block">
+                NATIONAL INTELLIGENCE
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-sans">
+                See where land acquisition is putting infrastructure at risk.
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-sans">
+                KSHETRA consolidates project, acquisition and administrative signals to give authorities a national view of emerging bottlenecks before they become critical delays.
+              </p>
+            </div>
+
+            {/* MAIN HORIZONTAL INTELLIGENCE PANEL (INDIA MAP + NATIONAL SNAPSHOT) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+              {/* LEFT SIDE: VECTOR INDIA MAP VISUALIZATION */}
+              <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xs p-5 shadow-lg relative overflow-hidden flex flex-col justify-between text-white font-mono min-h-[340px]">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-2 z-10">
+                  <span className="text-xs font-bold text-blue-400">GEOSPATIAL INTELLIGENCE MAP</span>
+                  <span className="text-[10px] text-slate-400">NATIONAL RADAR &bull; 28 STATES &amp; UTs</span>
+                </div>
+
+                {/* SVG VECTOR INDIA MAP WITH NODES */}
+                <div className="relative w-full h-64 flex items-center justify-center my-2">
+                  <svg className="w-full h-full max-h-60 overflow-visible" viewBox="0 0 500 450" fill="none">
+                    {/* Background Grid Lines */}
+                    <pattern id="gridPattern" width="30" height="30" patternUnits="userSpaceOnUse">
+                      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                    </pattern>
+                    <rect width="500" height="450" fill="url(#gridPattern)" />
+
+                    {/* Vector India Map Outline */}
+                    <path
+                      d="M 230 40 L 270 45 L 300 70 L 320 100 L 370 120 L 440 140 L 460 160 L 450 180 L 410 185 L 380 165 L 350 180 L 330 200 L 340 240 L 310 270 L 290 320 L 260 380 L 240 430 L 230 430 L 210 370 L 190 310 L 160 260 L 140 240 L 130 210 L 90 190 L 70 160 L 90 130 L 140 130 L 180 100 L 200 60 Z"
+                      fill="#0f172a"
+                      stroke="#334155"
+                      strokeWidth="2"
+                    />
+
+                    {/* State Division Vector Lines */}
+                    <path d="M 180 100 L 240 140 L 290 150 L 340 180" stroke="#1e293b" strokeWidth="1.5" strokeDasharray="3 3" />
+                    <path d="M 140 240 L 210 240 L 270 230 L 330 200" stroke="#1e293b" strokeWidth="1.5" strokeDasharray="3 3" />
+                    <path d="M 190 310 L 260 320 L 310 270" stroke="#1e293b" strokeWidth="1.5" strokeDasharray="3 3" />
+
+                    {/* Connecting Data Corridor Lines */}
+                    <line x1="160" y1="230" x2="280" y2="160" stroke="#3b82f6" strokeWidth="1.5" strokeDasharray="4 4" className="opacity-70" />
+                    <line x1="160" y1="230" x2="310" y2="240" stroke="#ef4444" strokeWidth="1.5" className="opacity-80" />
+                    <line x1="280" y1="160" x2="310" y2="240" stroke="#f59e0b" strokeWidth="1.5" strokeDasharray="4 4" className="opacity-70" />
+
+                    {/* Signal Nodes with Labels */}
+                    {/* Nashik, Maharashtra (Critical) */}
+                    <g transform="translate(160, 230)">
+                      <circle r="8" fill="#ef4444" className="animate-ping opacity-75" />
+                      <circle r="5" fill="#dc2626" stroke="#ffffff" strokeWidth="1.5" />
+                      <text x="10" y="4" fill="#ffffff" fontSize="10" fontWeight="bold" fontFamily="sans-serif">Maharashtra (Nashik)</text>
+                    </g>
+
+                    {/* Gujarat / DMIC (Elevated) */}
+                    <g transform="translate(120, 190)">
+                      <circle r="4" fill="#f59e0b" stroke="#ffffff" strokeWidth="1" />
+                      <text x="-50" y="-6" fill="#cbd5e1" fontSize="9" fontFamily="sans-serif">Gujarat</text>
+                    </g>
+
+                    {/* Uttar Pradesh (Jalaun) */}
+                    <g transform="translate(280, 160)">
+                      <circle r="6" fill="#ef4444" className="animate-pulse" />
+                      <circle r="4" fill="#dc2626" stroke="#ffffff" strokeWidth="1" />
+                      <text x="10" y="-4" fill="#ffffff" fontSize="10" fontWeight="bold" fontFamily="sans-serif">Uttar Pradesh</text>
+                    </g>
+
+                    {/* Bihar (Gaya) */}
+                    <g transform="translate(330, 180)">
+                      <circle r="4.5" fill="#ef4444" stroke="#ffffff" strokeWidth="1" />
+                      <text x="8" y="3" fill="#cbd5e1" fontSize="9" fontFamily="sans-serif">Bihar</text>
+                    </g>
+
+                    {/* Telangana (Monitor) */}
+                    <g transform="translate(230, 280)">
+                      <circle r="4" fill="#3b82f6" stroke="#ffffff" strokeWidth="1" />
+                      <text x="8" y="3" fill="#cbd5e1" fontSize="9" fontFamily="sans-serif">Telangana</text>
+                    </g>
+
+                    {/* Karnataka (Bengaluru) */}
+                    <g transform="translate(200, 340)">
+                      <circle r="4" fill="#f59e0b" stroke="#ffffff" strokeWidth="1" />
+                      <text x="8" y="3" fill="#cbd5e1" fontSize="9" fontFamily="sans-serif">Karnataka</text>
+                    </g>
+                  </svg>
+                </div>
+
+                <div className="flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-800 pt-2 z-10">
+                  <span className="flex items-center space-x-1.5">
+                    <span className="w-2 h-2 rounded-full bg-red-500" />
+                    <span>Critical Signals (147)</span>
+                  </span>
+                  <span className="flex items-center space-x-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span>Elevated Risk (618)</span>
+                  </span>
+                  <span className="flex items-center space-x-1.5">
+                    <span className="w-2 h-2 rounded-full bg-blue-500" />
+                    <span>Active GIS Nodes</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* RIGHT SIDE: NATIONAL SNAPSHOT SUMMARY */}
+              <div className="lg:col-span-5 bg-white border border-slate-300 rounded-xs p-6 shadow-2xs space-y-6 flex flex-col justify-between font-mono">
+                <div className="border-b border-slate-200 pb-3">
+                  <span className="text-[10px] font-bold text-blue-800 uppercase tracking-wider block">LIVE INTELLIGENCE FEED</span>
+                  <h3 className="text-base font-bold text-slate-900 font-sans mt-0.5">NATIONAL SITUATION</h3>
+                </div>
+
+                <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <span className="text-[10px] text-slate-500 font-bold uppercase block">PROJECTS MONITORED</span>
+                    <span className="text-3xl font-black text-slate-900 block mt-1">4,286</span>
+                    <span className="text-[10px] text-slate-500 font-sans block mt-0.5">Across 28 States &amp; UTs</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-amber-800 font-bold uppercase block">PROJECTS AT RISK</span>
+                    <span className="text-3xl font-black text-amber-800 block mt-1">618</span>
+                    <span className="text-[10px] text-slate-500 font-sans block mt-0.5">Delay probability &gt; 65%</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-red-700 font-bold uppercase block">CRITICAL ATTENTION</span>
+                    <span className="text-3xl font-black text-red-700 block mt-1">147</span>
+                    <span className="text-[10px] text-slate-500 font-sans block mt-0.5">Immediate officer decision</span>
+                  </div>
+                  <div>
+                    <span className="text-[10px] text-slate-500 font-bold uppercase block">PREDICTED DELAY EXPOSURE</span>
+                    <span className="text-3xl font-black text-slate-900 block mt-1">+18,420 DAYS</span>
+                    <span className="text-[10px] text-slate-500 font-sans block mt-0.5">Cumulative risk exposure</span>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-slate-50 border border-slate-200 rounded-xs flex items-center space-x-2 text-xs">
+                  <span className="w-2.5 h-2.5 rounded-full bg-blue-700 animate-pulse flex-shrink-0" />
+                  <span className="font-bold text-slate-800 font-sans text-xs">
+                    Monitoring acquisition conditions across 28 States &amp; UTs
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* 3 SMALL PROJECT SIGNAL CARDS */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              <div className="bg-white border border-slate-300 p-4 rounded-xs space-y-2 shadow-2xs">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-1.5 font-mono text-[10px]">
+                  <span className="font-bold text-blue-800 uppercase">PROJECT SIGNAL</span>
+                  <span className="px-1.5 py-0.5 bg-red-100 text-red-800 rounded-xs font-bold border border-red-200 uppercase">CRITICAL</span>
+                </div>
+                <h4 className="font-bold text-slate-900 text-xs font-sans">MUMBAI–NAGPUR INFRASTRUCTURE CORRIDOR</h4>
+                <div className="text-[11px] text-slate-500 font-mono">Nashik, Maharashtra</div>
+                <div className="text-xs text-slate-700 font-medium font-sans">
+                  <strong className="text-slate-500 block text-[9px] font-mono uppercase">PRIMARY BOTTLENECK:</strong>
+                  Compensation records unresolved
+                </div>
+              </div>
+
+              <div className="bg-white border border-slate-300 p-4 rounded-xs space-y-2 shadow-2xs">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-1.5 font-mono text-[10px]">
+                  <span className="font-bold text-blue-800 uppercase">PROJECT SIGNAL</span>
+                  <span className="px-1.5 py-0.5 bg-amber-100 text-amber-900 rounded-xs font-bold border border-amber-300 uppercase">ELEVATED</span>
+                </div>
+                <h4 className="font-bold text-slate-900 text-xs font-sans">DELHI–MUMBAI INDUSTRIAL CORRIDOR</h4>
+                <div className="text-[11px] text-slate-500 font-mono">Madhya Pradesh</div>
+                <div className="text-xs text-slate-700 font-medium font-sans">
+                  <strong className="text-slate-500 block text-[9px] font-mono uppercase">PRIMARY BOTTLENECK:</strong>
+                  Ownership verification pending
+                </div>
+              </div>
+
+              <div className="bg-white border border-slate-300 p-4 rounded-xs space-y-2 shadow-2xs">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-1.5 font-mono text-[10px]">
+                  <span className="font-bold text-blue-800 uppercase">PROJECT SIGNAL</span>
+                  <span className="px-1.5 py-0.5 bg-blue-100 text-blue-900 rounded-xs font-bold border border-blue-300 uppercase">MONITOR</span>
+                </div>
+                <h4 className="font-bold text-slate-900 text-xs font-sans">NORTH–SOUTH CONNECTIVITY PROJECT</h4>
+                <div className="text-[11px] text-slate-500 font-mono">Telangana</div>
+                <div className="text-xs text-slate-700 font-medium font-sans">
+                  <strong className="text-slate-500 block text-[9px] font-mono uppercase">PRIMARY BOTTLENECK:</strong>
+                  Statutory clearance progressing
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* SECTION 3: NATIONAL COVERAGE & GIS PREVIEW SECTION */}
         <section className="space-y-8 border-b border-slate-800 pb-12">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
