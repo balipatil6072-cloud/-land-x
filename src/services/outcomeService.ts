@@ -1,7 +1,7 @@
 import type { OutcomeVerification } from '../types';
 
 /**
- * Calculates Intervention Impact and Effectiveness metrics for LAND-X Phase 3.
+ * Calculates Intervention Impact and Effectiveness metrics for KSHETRA Phase 3.
  * Distinguishes PREDICTED IMPACT from OBSERVED/RECORDED IMPACT.
  */
 export function calculateInterventionImpact(

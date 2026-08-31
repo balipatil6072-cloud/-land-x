@@ -35,7 +35,7 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({
       <div className="p-4 bg-slate-50 border border-slate-200 rounded text-xs text-slate-500 text-left max-w-md mx-auto space-y-1">
         <div className="font-bold text-slate-700">Modular Architecture Notice:</div>
         <div>
-          This module is designed in the LAND-X schema and will consume the centralized prediction and entity data services.
+          This module is designed in the KSHETRA schema and will consume the centralized prediction and entity data services.
         </div>
       </div>
 

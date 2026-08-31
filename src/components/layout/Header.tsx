@@ -24,15 +24,15 @@ export const Header: React.FC<HeaderProps> = ({
 
   // Compute Breadcrumb / Page Context Title
   const getBreadcrumbTitle = () => {
-    if (path === '/predictive-intelligence') return { title: 'PREDICTIVE INTELLIGENCE', breadcrumb: 'LAND-X / PREDICT' };
-    if (path === '/command-center') return { title: 'NATIONAL SITUATION', breadcrumb: 'LAND-X / OVERVIEW' };
-    if (path === '/national-map') return { title: 'NATIONAL MAP (GIS)', breadcrumb: 'LAND-X / MONITOR' };
-    if (path === '/projects') return { title: 'PROJECTS DIRECTORY', breadcrumb: 'LAND-X / MONITOR' };
-    if (path.startsWith('/projects/')) return { title: 'PROJECT INTELLIGENCE BRIEF', breadcrumb: `LAND-X / PROJECTS / ${path.split('/')[2] || 'LA-1842'}` };
-    if (path.startsWith('/early-warning')) return { title: 'EARLY WARNINGS QUEUE', breadcrumb: 'LAND-X / RESPOND' };
-    if (path === '/interventions') return { title: 'ACTIONS & INTERVENTIONS', breadcrumb: 'LAND-X / RESPOND' };
-    if (path === '/governance') return { title: 'GOVERNANCE AUDIT LOG', breadcrumb: 'LAND-X / AUDIT' };
-    return { title: 'WORKSPACE', breadcrumb: 'LAND-X' };
+    if (path === '/predictive-intelligence') return { title: 'PREDICTIVE INTELLIGENCE', breadcrumb: 'KSHETRA / PREDICT' };
+    if (path === '/command-center') return { title: 'NATIONAL SITUATION', breadcrumb: 'KSHETRA / OVERVIEW' };
+    if (path === '/national-map') return { title: 'NATIONAL MAP (GIS)', breadcrumb: 'KSHETRA / MONITOR' };
+    if (path === '/projects') return { title: 'PROJECTS DIRECTORY', breadcrumb: 'KSHETRA / MONITOR' };
+    if (path.startsWith('/projects/')) return { title: 'PROJECT INTELLIGENCE BRIEF', breadcrumb: `KSHETRA / PROJECTS / ${path.split('/')[2] || 'LA-1842'}` };
+    if (path.startsWith('/early-warning')) return { title: 'EARLY WARNINGS QUEUE', breadcrumb: 'KSHETRA / RESPOND' };
+    if (path === '/interventions') return { title: 'ACTIONS & INTERVENTIONS', breadcrumb: 'KSHETRA / RESPOND' };
+    if (path === '/governance') return { title: 'GOVERNANCE AUDIT LOG', breadcrumb: 'KSHETRA / AUDIT' };
+    return { title: 'WORKSPACE', breadcrumb: 'KSHETRA' };
   };
 
   const { title, breadcrumb } = getBreadcrumbTitle();

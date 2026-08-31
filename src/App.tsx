@@ -23,7 +23,7 @@ export function App() {
     <AppProvider>
       <Router>
         <Routes>
-          {/* LAND-X Dark Geospatial Hero Landing Page */}
+          {/* KSHETRA Dark Geospatial Hero Landing Page */}
           <Route path="/" element={<LandingPage />} />
 
           {/* Core AI Predictive Capability Route */}

@@ -179,7 +179,7 @@ export const ProjectDetailPage: React.FC = () => {
           <div className="px-4 py-1 last:pr-0">
             <span className="text-[10px] text-slate-500 font-bold uppercase block">MODEL CONFIDENCE</span>
             <span className="text-2xl font-bold text-blue-800 block mt-0.5">87%</span>
-            <span className="text-[10px] text-slate-500 font-mono block mt-0.5">LAND-X ML v0.8</span>
+            <span className="text-[10px] text-slate-500 font-mono block mt-0.5">KSHETRA ML v0.8</span>
           </div>
         </div>
       </div>
@@ -514,7 +514,7 @@ export const ProjectDetailPage: React.FC = () => {
             <div className="space-y-1.5 text-xs font-mono">
               <div className="flex justify-between">
                 <span className="text-slate-500">Model:</span>
-                <span className="font-bold text-slate-900">LAND-X v0.8</span>
+                <span className="font-bold text-slate-900">KSHETRA v0.8</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Generated:</span>

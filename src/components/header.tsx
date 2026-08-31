@@ -37,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="h-12 bg-white border-b border-slate-200 px-5 flex items-center justify-between select-none z-20 flex-shrink-0 text-xs">
       {/* Title & Breadcrumb Trail */}
       <div className="flex items-center space-x-2">
-        <span className="font-mono font-black text-slate-900 tracking-wider">LAND-X</span>
+        <span className="font-mono font-black text-slate-900 tracking-wider">KSHETRA</span>
         <span className="text-slate-400">|</span>
         <span className="text-slate-500 font-medium">{breadcrumbs[0]}</span>
         <ChevronRight className="w-3.5 h-3.5 text-slate-400" />

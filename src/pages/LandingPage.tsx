@@ -161,15 +161,7 @@ export const LandingPage: React.FC = () => {
         {/* HERO HEADER BAR */}
         <header className="relative z-30 p-6 md:px-12 md:py-8 flex items-center justify-between max-w-7xl mx-auto w-full">
           <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/command-center')}>
-            <LandXLogo size="md" lightMode={true} showWordmark={false} />
-            <div>
-              <span className="font-mono text-base font-black tracking-widest text-white block leading-none">
-                LAND-X
-              </span>
-              <span className="text-[9px] font-mono text-slate-400 tracking-wider uppercase">
-                National Land Acquisition Intelligence
-              </span>
-            </div>
+            <LandXLogo size="lg" lightMode={true} showWordmark={true} />
           </div>
 
           <nav className="hidden md:flex items-center space-x-8 text-xs font-semibold text-slate-300">
@@ -457,7 +449,7 @@ export const LandingPage: React.FC = () => {
               FROM REPORTING TO PREDICTION
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              LAND-X shifts land-acquisition monitoring from reactive reporting to proactive intervention.
+              KSHETRA shifts land-acquisition monitoring from reactive reporting to proactive intervention.
             </p>
           </div>
 
@@ -530,10 +522,10 @@ export const LandingPage: React.FC = () => {
           </div>
         </section>
 
-        {/* SECTION 6: EXPLORE LAND-X (FINAL ENTRY POINT) */}
+        {/* SECTION 6: EXPLORE KSHETRA (FINAL ENTRY POINT) */}
         <section className="p-8 bg-slate-900/90 border border-slate-800 text-white rounded-xs space-y-4 text-center">
           <h2 className="text-2xl font-bold tracking-tight uppercase font-mono">
-            EXPLORE LAND-X
+            EXPLORE KSHETRA
           </h2>
           <p className="text-xs text-slate-300 max-w-xl mx-auto">
             Move from national visibility to project-level intelligence.

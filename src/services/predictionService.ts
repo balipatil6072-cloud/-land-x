@@ -37,7 +37,7 @@ export interface DetailedAnalysisResult extends PredictionResult {
 }
 
 /**
- * Deterministic prototype prediction engine for LAND-X (SIH26017).
+ * Deterministic prototype prediction engine for KSHETRA (SIH26017).
  * Replaces hardcoded values with actual feature-driven risk scoring.
  * Cleanly abstracted to allow replacement with trained PyTorch / XGBoost ML model later.
  */
@@ -274,7 +274,7 @@ export function analyzeNewProjectInput(input: AddProjectInput): DetailedAnalysis
     },
   ];
 
-  // Explainability Generator (Why Land-X Flagged This Project)
+  // Explainability Generator (Why KSHETRA Flagged This Project)
   const explanations: string[] = [];
   if (input.compensationPaidPercent < 60) {
     explanations.push(`Compensation disbursement is only ${input.compensationPaidPercent}% complete, triggering elevated risk of landholder protests.`);
@@ -320,7 +320,7 @@ export function analyzeNewProjectInput(input: AddProjectInput): DetailedAnalysis
     stageRisks,
     explanations,
     recommendations,
-    explanation: `LAND-X predicts ${rawRiskScore}% delay probability (${predictedDelayDays} projected delay days) primarily driven by ${topDriver} status.`,
+    explanation: `KSHETRA predicts ${rawRiskScore}% delay probability (${predictedDelayDays} projected delay days) primarily driven by ${topDriver} status.`,
     calculatedAt: new Date().toISOString(),
   };
 }

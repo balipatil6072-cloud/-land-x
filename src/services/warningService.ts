@@ -80,7 +80,7 @@ export const INITIAL_EARLY_WARNINGS: EarlyWarningItem[] = [
       { id: 'wt-2', date: '18 Aug 2026', title: 'Compensation payment backlog spike', description: 'Unpaid beneficiaries reached 38% across Nashik tehsil', severity: 'high' },
       { id: 'wt-3', date: '21 Aug 2026', title: 'Threshold Breach (Risk > 80%)', description: 'Predicted delay risk crossed critical 80% threshold', severity: 'critical' },
       { id: 'wt-4', date: '24 Aug 2026', title: 'Legal Court Case Escalation', description: '14 pending court injunction stay orders filed', severity: 'critical' },
-      { id: 'wt-5', date: '28 Aug 2026', title: 'CRITICAL EARLY WARNING GENERATED', description: 'LAND-X Engine generated P1 Immediate Risk Escalation warning', severity: 'critical' },
+      { id: 'wt-5', date: '28 Aug 2026', title: 'CRITICAL EARLY WARNING GENERATED', description: 'KSHETRA Engine generated P1 Immediate Risk Escalation warning', severity: 'critical' },
     ],
   },
   {
@@ -115,7 +115,7 @@ export const INITIAL_EARLY_WARNINGS: EarlyWarningItem[] = [
     warningTimeline: [
       { id: 'wt-19-1', date: '07 Aug 2026', title: 'Valuation Award Rejection', description: '52% landowners rejected award tariff rate', severity: 'high' },
       { id: 'wt-19-2', date: '14 Aug 2026', title: 'High Court Writ Filing', description: '18 title dispute cases submitted in Patna High Court', severity: 'critical' },
-      { id: 'wt-19-3', date: '27 Aug 2026', title: 'HIGH WARNING GENERATED', description: 'LAND-X Engine generated P1 Legal Dispute warning', severity: 'critical' },
+      { id: 'wt-19-3', date: '27 Aug 2026', title: 'HIGH WARNING GENERATED', description: 'KSHETRA Engine generated P1 Legal Dispute warning', severity: 'critical' },
     ],
   },
   {

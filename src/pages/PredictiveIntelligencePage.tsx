@@ -150,7 +150,7 @@ export const PredictiveIntelligencePage: React.FC = () => {
             </h2>
           </div>
           <span className="text-[11px] font-mono text-slate-500">
-            Updated Real-Time via LAND-X Engine
+            Updated Real-Time via KSHETRA Engine
           </span>
         </div>
 
@@ -403,7 +403,7 @@ export const PredictiveIntelligencePage: React.FC = () => {
           <div className="flex items-center space-x-2">
             <Zap className="w-4 h-4 text-amber-400" />
             <h3 className="text-xs font-bold text-white uppercase tracking-wider">
-              PRIORITY INTERVENTIONS (LAND-X RECOMMENDED)
+              PRIORITY INTERVENTIONS (KSHETRA RECOMMENDED)
             </h3>
           </div>
           <button

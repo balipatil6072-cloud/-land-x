@@ -162,7 +162,7 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({ isOpen, onClos
             <Cpu className="w-5 h-5 text-blue-400" />
             <div>
               <span className="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-widest block">
-                LAND-X AI PREDICTIVE ENGINE &bull; SIH26017
+                KSHETRA AI PREDICTIVE ENGINE &bull; SIH26017
               </span>
               <h2 className="text-sm sm:text-base font-bold font-mono text-white uppercase tracking-tight">
                 {step === 'input' ? 'Add New Project & Run Predictive Analysis' : step === 'analyzing' ? 'Analyzing Project Risk Parameters...' : 'Predictive Analysis Results'}
@@ -475,7 +475,7 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({ isOpen, onClos
           <div className="p-12 flex flex-col items-center justify-center space-y-4 my-auto">
             <div className="w-12 h-12 border-3 border-blue-700 border-t-transparent rounded-full animate-spin" />
             <div className="text-center space-y-1 font-mono">
-              <h3 className="font-bold text-slate-900 text-base">Running LAND-X Predictive Risk Scoring Engine...</h3>
+              <h3 className="font-bold text-slate-900 text-base">Running KSHETRA Predictive Risk Scoring Engine...</h3>
               <p className="text-xs text-slate-500">Evaluating 14 land acquisition delay parameters against SIH26017 benchmarks</p>
             </div>
           </div>
@@ -572,9 +572,9 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({ isOpen, onClos
               </div>
             </div>
 
-            {/* WHY LAND-X FLAGGED THIS PROJECT */}
+            {/* WHY KSHETRA FLAGGED THIS PROJECT */}
             <div className="space-y-2 p-3 bg-amber-50 border border-amber-200 rounded-xs">
-              <h4 className="font-mono font-bold text-amber-900 uppercase text-xs">WHY LAND-X FLAGGED THIS PROJECT</h4>
+              <h4 className="font-mono font-bold text-amber-900 uppercase text-xs">WHY KSHETRA FLAGGED THIS PROJECT</h4>
               <ul className="space-y-1 text-xs text-amber-900 font-medium">
                 {analysisResult.explanations.map((exp, idx) => (
                   <li key={idx} className="flex items-start space-x-2">
@@ -585,9 +585,9 @@ export const AddProjectModal: React.FC<AddProjectModalProps> = ({ isOpen, onClos
               </ul>
             </div>
 
-            {/* LAND-X RECOMMENDED INTERVENTIONS */}
+            {/* KSHETRA RECOMMENDED INTERVENTIONS */}
             <div className="space-y-2 p-3 bg-blue-50 border border-blue-200 rounded-xs">
-              <h4 className="font-mono font-bold text-blue-950 uppercase text-xs">LAND-X RECOMMENDS (PRIORITIZED ACTION)</h4>
+              <h4 className="font-mono font-bold text-blue-950 uppercase text-xs">KSHETRA RECOMMENDS (PRIORITIZED ACTION)</h4>
               <ol className="space-y-1 text-xs text-blue-950 font-semibold list-decimal list-inside">
                 {analysisResult.recommendations.map((rec, idx) => (
                   <li key={idx}>{rec}</li>
