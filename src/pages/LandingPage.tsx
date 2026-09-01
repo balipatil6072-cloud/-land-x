@@ -6,13 +6,10 @@ import {
   ArrowRight,
   MapPin,
   Lock,
-  Building2,
   ShieldCheck,
   Activity,
   AlertTriangle,
   CheckCircle2,
-  HelpCircle,
-  Globe,
   Compass,
   Cpu,
   Zap,
@@ -257,12 +254,12 @@ export const LandingPage: React.FC = () => {
           </video>
         )}
 
-        {/* Layer 2: Dark Navy Overlay (73.5% Overlay / 26.5% Net Video Visibility) */}
+        {/* Layer 2: Dark Navy Overlay (~76.5% Overlay / ~23.5% Net Video Visibility) */}
         <div
           className="absolute inset-0 z-20 pointer-events-none"
           style={{
             background:
-              'linear-gradient(135deg, rgba(3,8,22,0.74) 0%, rgba(5,14,36,0.72) 50%, rgba(3,8,22,0.75) 100%)',
+              'linear-gradient(135deg, rgba(3,8,22,0.77) 0%, rgba(5,14,36,0.75) 50%, rgba(3,8,22,0.78) 100%)',
           }}
         />
 
@@ -278,28 +275,6 @@ export const LandingPage: React.FC = () => {
 
       {/* 2. HERO SECTION CONTAINING GLASS HEADER & MAIN CONTENT */}
       <section className="relative z-10 w-full min-h-screen flex flex-col justify-between overflow-hidden">
-        {/* TOP UTILITY STRIP */}
-        <div className="relative z-30 bg-slate-950/80 backdrop-blur-md border-b border-slate-800/80 text-slate-300 text-[11px] font-mono py-1.5 px-4 md:px-12 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Building2 className="w-3.5 h-3.5 text-blue-400" />
-            <span className="font-bold text-white tracking-wide uppercase">
-              Government Operations Platform &bull; SIH 2026 Prototype
-            </span>
-          </div>
-
-          <div className="hidden sm:flex items-center space-x-4 text-[10px]">
-            <span className="text-slate-400 flex items-center space-x-1">
-              <Globe className="w-3 h-3 text-blue-400" />
-              <span>National Infrastructure Cell</span>
-            </span>
-            <span className="text-slate-700">&bull;</span>
-            <span className="text-slate-400 flex items-center space-x-1">
-              <HelpCircle className="w-3 h-3 text-slate-400" />
-              <span>SIH26017 Guidelines</span>
-            </span>
-          </div>
-        </div>
-
         {/* MAIN GLASS HEADER BAR */}
         <header className="relative z-30 bg-slate-900/75 backdrop-blur-md border-b border-slate-800/80 py-3.5 px-4 md:px-12">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
