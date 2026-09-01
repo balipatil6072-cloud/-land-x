@@ -50,6 +50,11 @@ interface NationalMapPageProps {
   setSelectedState: (s: string) => void;
 }
 
+const INDIA_BOUNDS: [[number, number], [number, number]] = [
+  [6.0, 68.0],
+  [36.0, 97.5],
+];
+
 export const NationalMapPage: React.FC<NationalMapPageProps> = ({
   selectedState,
   setSelectedState,
@@ -60,8 +65,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
   const [selectedRiskLevel, setSelectedRiskLevel] = useState<string>('All');
   const [mapSearchQuery, setMapSearchQuery] = useState<string>('');
 
-  // MAP STYLE BASEMAP SELECTOR: 'standard' (Default) | 'satellite' | 'terrain' | 'dark' (Zero API Keys)
-  const [basemapStyle, setBasemapStyle] = useState<'standard' | 'satellite' | 'terrain' | 'dark'>('standard');
+  // MAP STYLE BASEMAP SELECTOR: 'dark' (Default National Infrastructure GIS) | 'standard' | 'satellite' | 'terrain'
+  const [basemapStyle, setBasemapStyle] = useState<'dark' | 'standard' | 'satellite' | 'terrain'>('dark');
 
   // Layer Toggle
   const showCorridors = true;
@@ -122,7 +127,7 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
     return true;
   });
 
-  // Highlighted Infrastructure Corridors (e.g. LA-1842 Mumbai-Nagpur Corridor)
+  // Highlighted Infrastructure Corridors across India
   const mumbaiNagpurCorridor: [number, number][] = [
     [19.0760, 72.8777], // Mumbai
     [19.2183, 72.9781], // Thane
@@ -130,6 +135,22 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
     [20.7002, 77.0082], // Akola
     [20.9320, 77.7523], // Amravati
     [21.1458, 79.0882], // Nagpur
+  ];
+
+  const patnaGayaCorridor: [number, number][] = [
+    [25.5941, 85.1376], // Patna
+    [24.7955, 84.9994], // Gaya
+  ];
+
+  const bundelkhandCorridor: [number, number][] = [
+    [26.8467, 80.9462], // Lucknow / Jalaun
+    [25.1800, 79.6400], // Jhansi / Bundelkhand
+  ];
+
+  const bengaluruChennaiCorridor: [number, number][] = [
+    [12.9716, 77.5946], // Bengaluru
+    [12.9165, 79.1325], // Vellore
+    [13.0827, 80.2707], // Chennai
   ];
 
   return (
@@ -222,6 +243,10 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
         <MapContainer
           center={mapCenter}
           zoom={mapZoom}
+          minZoom={4}
+          maxZoom={12}
+          maxBounds={INDIA_BOUNDS}
+          maxBoundsViscosity={1.0}
           scrollWheelZoom={true}
           style={{ width: '100%', height: '100%' }}
         >
@@ -256,17 +281,46 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
             />
           )}
 
-          {/* Highlighted Infrastructure Corridor Line */}
+          {/* Highlighted National Infrastructure Corridor Lines */}
           {showCorridors && (
-            <Polyline
-              positions={mumbaiNagpurCorridor}
-              pathOptions={{
-                color: basemapStyle === 'dark' ? '#60a5fa' : '#2563eb',
-                weight: 4,
-                opacity: 0.8,
-                dashArray: '8, 8',
-              }}
-            />
+            <>
+              <Polyline
+                positions={mumbaiNagpurCorridor}
+                pathOptions={{
+                  color: basemapStyle === 'dark' ? '#60a5fa' : '#2563eb',
+                  weight: 4,
+                  opacity: 0.8,
+                  dashArray: '8, 8',
+                }}
+              />
+              <Polyline
+                positions={patnaGayaCorridor}
+                pathOptions={{
+                  color: basemapStyle === 'dark' ? '#f59e0b' : '#d97706',
+                  weight: 3.5,
+                  opacity: 0.8,
+                  dashArray: '6, 6',
+                }}
+              />
+              <Polyline
+                positions={bundelkhandCorridor}
+                pathOptions={{
+                  color: basemapStyle === 'dark' ? '#ef4444' : '#dc2626',
+                  weight: 3.5,
+                  opacity: 0.8,
+                  dashArray: '6, 6',
+                }}
+              />
+              <Polyline
+                positions={bengaluruChennaiCorridor}
+                pathOptions={{
+                  color: basemapStyle === 'dark' ? '#3b82f6' : '#1d4ed8',
+                  weight: 3.5,
+                  opacity: 0.8,
+                  dashArray: '6, 6',
+                }}
+              />
+            </>
           )}
 
           {filteredList.map((item) => {
