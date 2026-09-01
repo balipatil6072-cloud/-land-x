@@ -33,6 +33,9 @@ export const LandingPage: React.FC = () => {
   const [videoError, setVideoError] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
+  // Landing Page Map Preview Style State (Standard by default)
+  const [previewMapStyle, setPreviewMapStyle] = useState<'standard' | 'dark'>('standard');
+
   // About KSHETRA Infrastructure Visual Carousel State
   const [aboutSlide, setAboutSlide] = useState(0);
   const [resetTimerToken, setResetTimerToken] = useState(0);
@@ -703,26 +706,53 @@ export const LandingPage: React.FC = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* GIS Leaflet Map Preview */}
-            <div className="lg:col-span-7 bg-slate-900 border border-slate-800 p-2 rounded-xs shadow-xl">
+            <div className="lg:col-span-7 bg-slate-900 border border-slate-800 p-2 rounded-xs shadow-xl relative">
+              {/* Map Style Selector Toggle Overlay */}
+              <div className="absolute top-4 right-4 z-20 flex items-center bg-slate-900/90 backdrop-blur-xs border border-slate-700/80 rounded-xs p-1 text-[10px] font-mono text-white shadow-md space-x-1">
+                <button
+                  onClick={() => setPreviewMapStyle('standard')}
+                  className={`px-2 py-0.5 rounded-xs transition-colors cursor-pointer ${
+                    previewMapStyle === 'standard' ? 'bg-blue-600 text-white font-bold' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  STANDARD
+                </button>
+                <button
+                  onClick={() => setPreviewMapStyle('dark')}
+                  className={`px-2 py-0.5 rounded-xs transition-colors cursor-pointer ${
+                    previewMapStyle === 'dark' ? 'bg-blue-600 text-white font-bold' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  DARK
+                </button>
+              </div>
+
               <div className="h-72 w-full rounded-xs overflow-hidden">
                 <MapContainer
-                  center={[22.5937, 78.9629]}
-                  zoom={4}
-                  minZoom={4}
-                  maxZoom={7}
-                  maxBounds={[[6.0, 68.0], [36.0, 97.5]]}
-                  maxBoundsViscosity={1.0}
+                  center={[20.5937, 78.9629]}
+                  zoom={2.5}
+                  minZoom={2}
+                  maxZoom={8}
                   scrollWheelZoom={false}
                   zoomControl={false}
                   style={{ width: '100%', height: '100%' }}
                 >
-                  <TileLayer
-                    attribution='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
-                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-                  />
-                  <TileLayer
-                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
-                  />
+                  {previewMapStyle === 'standard' ? (
+                    <TileLayer
+                      attribution='Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom'
+                      url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+                    />
+                  ) : (
+                    <>
+                      <TileLayer
+                        attribution='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+                        url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+                      />
+                      <TileLayer
+                        url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+                      />
+                    </>
+                  )}
                   <Marker position={[19.9975, 73.7898]} icon={redIcon} />
                   <Marker position={[26.8467, 80.9462]} icon={redIcon} />
                   <Marker position={[25.5941, 85.1376]} icon={redIcon} />
