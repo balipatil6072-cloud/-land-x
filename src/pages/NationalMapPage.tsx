@@ -65,8 +65,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
   const [selectedRiskLevel, setSelectedRiskLevel] = useState<string>('All');
   const [mapSearchQuery, setMapSearchQuery] = useState<string>('');
 
-  // MAP STYLE BASEMAP SELECTOR: 'dark' (Default National Infrastructure GIS) | 'standard' | 'satellite' | 'terrain'
-  const [basemapStyle, setBasemapStyle] = useState<'dark' | 'standard' | 'satellite' | 'terrain'>('dark');
+  // MAP STYLE BASEMAP SELECTOR: 'standard' (Default National Administrative Map) | 'dark' | 'satellite' | 'terrain'
+  const [basemapStyle, setBasemapStyle] = useState<'standard' | 'dark' | 'satellite' | 'terrain'>('standard');
 
   // Layer Toggle
   const showCorridors = true;
@@ -78,9 +78,9 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
     warning?: (typeof warnings)[0];
   } | null>(null);
 
-  // Map state view center & zoom
-  const [mapCenter, setMapCenter] = useState<[number, number]>([20.5937, 78.9629]);
-  const [mapZoom, setMapZoom] = useState<number>(5);
+  // Map state view center & zoom (India-Focused Viewport)
+  const [mapCenter, setMapCenter] = useState<[number, number]>([22.5, 79.0]);
+  const [mapZoom, setMapZoom] = useState<number>(4.8);
 
   // Calculate risks for all projects dynamically
   const projectsWithRisk = projects.map((project) => ({
@@ -107,8 +107,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
       setMapCenter([15.3173, 75.7139]);
       setMapZoom(7);
     } else {
-      setMapCenter([20.5937, 78.9629]);
-      setMapZoom(5);
+      setMapCenter([22.5, 79.0]);
+      setMapZoom(4.8);
     }
   }, [selectedState]);
 
@@ -230,8 +230,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
             setSelectedRiskLevel('All');
             setMapSearchQuery('');
             setActiveProjectPanel(null);
-            setMapCenter([22.5937, 78.9629]);
-            setMapZoom(5);
+            setMapCenter([22.5, 79.0]);
+            setMapZoom(4.8);
           }}
           className="px-3 py-1.5 bg-white/95 hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs rounded font-bold shadow-md flex items-center space-x-1 cursor-pointer"
         >
