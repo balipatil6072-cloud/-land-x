@@ -230,6 +230,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
             setSelectedRiskLevel('All');
             setMapSearchQuery('');
             setActiveProjectPanel(null);
+            setMapCenter([22.5937, 78.9629]);
+            setMapZoom(5);
           }}
           className="px-3 py-1.5 bg-white/95 hover:bg-slate-100 border border-slate-300 text-slate-800 text-xs rounded font-bold shadow-md flex items-center space-x-1 cursor-pointer"
         >
@@ -275,10 +277,15 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
           )}
 
           {basemapStyle === 'dark' && (
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            />
+            <>
+              <TileLayer
+                attribution='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+              />
+              <TileLayer
+                url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+              />
+            </>
           )}
 
           {/* Highlighted National Infrastructure Corridor Lines */}

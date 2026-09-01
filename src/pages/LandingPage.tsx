@@ -706,7 +706,7 @@ export const LandingPage: React.FC = () => {
             <div className="lg:col-span-7 bg-slate-900 border border-slate-800 p-2 rounded-xs shadow-xl">
               <div className="h-72 w-full rounded-xs overflow-hidden">
                 <MapContainer
-                  center={[21.5, 78.9]}
+                  center={[22.5937, 78.9629]}
                   zoom={4}
                   minZoom={4}
                   maxZoom={7}
@@ -717,8 +717,11 @@ export const LandingPage: React.FC = () => {
                   style={{ width: '100%', height: '100%' }}
                 >
                   <TileLayer
-                    attribution='&copy; CARTO &copy; OpenStreetMap'
-                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                    attribution='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+                  />
+                  <TileLayer
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
                   />
                   <Marker position={[19.9975, 73.7898]} icon={redIcon} />
                   <Marker position={[26.8467, 80.9462]} icon={redIcon} />
