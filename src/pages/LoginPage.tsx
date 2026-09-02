@@ -5,16 +5,17 @@ import { KshetraLogo } from '../components/common/LandXLogo';
 import { DEMO_ACCOUNTS } from '../config/demoUsers';
 import type { OfficerRole } from '../types/auth';
 import {
-  Lock,
   Mail,
   Key,
   ShieldCheck,
   ArrowRight,
   AlertCircle,
   Building2,
-  Users,
-  CheckCircle2,
-  Info,
+  Globe,
+  Landmark,
+  MapPin,
+  Briefcase,
+  Activity,
 } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
@@ -28,7 +29,6 @@ export const LoginPage: React.FC = () => {
   const [rememberDevice, setRememberDevice] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showDemoCredentials, setShowDemoCredentials] = useState(true);
 
   // If already logged in, redirect
   React.useEffect(() => {
@@ -57,207 +57,268 @@ export const LoginPage: React.FC = () => {
     navigate(redirectTarget, { replace: true });
   };
 
+  const fillDemoCredentials = () => {
+    setEmail('admin@kshetra.gov.in');
+    setPassword('kshetra2026');
+  };
+
+  const getRoleIcon = (role: OfficerRole) => {
+    switch (role) {
+      case 'NATIONAL_ADMIN':
+        return Globe;
+      case 'STATE_OFFICER':
+        return Landmark;
+      case 'DISTRICT_OFFICER':
+        return MapPin;
+      case 'PROJECT_OFFICER':
+        return Briefcase;
+      case 'MONITORING_OFFICER':
+        return Activity;
+      case 'READ_ONLY':
+        return ShieldCheck;
+      default:
+        return Building2;
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-between select-none font-sans text-slate-100 relative overflow-hidden">
-      {/* Background Decorative Grid */}
-      <div
-        className="absolute inset-0 z-0 opacity-10 pointer-events-none"
-        style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
-          backgroundSize: '24px 24px',
-        }}
-      />
+    <div className="min-h-screen bg-[#F5F6F8] flex flex-col justify-between font-sans text-slate-800 antialiased selection:bg-blue-100 selection:text-blue-900">
+      {/* 1. TOP GOVERNMENT-STYLE HEADER */}
+      <header className="h-[72px] bg-white border-b border-slate-200 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30 shadow-2xs">
+        {/* Left: Logo, Wordmark & Subtitle */}
+        <div className="flex items-center">
+          <Link to="/" className="flex items-center space-x-3 group">
+            <KshetraLogo size="md" lightMode={false} showWordmark={true} />
+          </Link>
+          <div className="hidden md:block h-6 w-px bg-slate-200 mx-4" />
+          <span className="hidden md:inline-block text-xs font-medium text-slate-500">
+            Land Acquisition Intelligence Platform
+          </span>
+        </div>
 
-      {/* TOP HEADER BAR */}
-      <header className="relative z-10 border-b border-slate-800 bg-slate-900/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2.5">
-          <KshetraLogo size="md" lightMode={true} showWordmark={true} />
-        </Link>
-
-        <div className="flex items-center space-x-4 text-xs font-mono">
-          <span className="hidden sm:inline text-slate-400">SIH2026 Prototype Authorization Gateway</span>
+        {/* Center / Right: Portal Title, Demo Label & Public Portal Link */}
+        <div className="flex items-center space-x-3 sm:space-x-4">
+          <span className="hidden lg:inline-block text-xs font-semibold text-slate-700">
+            Government Officer Portal
+          </span>
+          <span className="px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded text-[11px] font-medium tracking-wide">
+            SIH 2026 Prototype
+          </span>
           <Link
             to="/"
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xs border border-slate-700 transition-colors font-semibold"
+            className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 text-slate-700 hover:text-[#1b365d] border border-slate-300 hover:border-slate-400 rounded-md text-xs font-semibold transition-colors shadow-2xs"
           >
-            Public Portal &rarr;
+            <span>Public Portal</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </header>
 
-      {/* MAIN CONTENT AREA */}
-      <main className="relative z-10 my-auto px-4 py-8 max-w-4xl mx-auto w-full flex flex-col lg:flex-row items-stretch gap-6">
-        {/* LEFT COLUMN: OFFICIAL LOGIN FORM */}
-        <div className="flex-1 bg-slate-900 border border-slate-800 rounded-xs p-6 sm:p-8 shadow-2xl space-y-6 flex flex-col justify-between">
-          <div className="space-y-4">
-            <div className="space-y-1 border-b border-slate-800 pb-4">
-              <div className="inline-flex items-center space-x-1.5 text-blue-400 font-mono text-[11px] uppercase tracking-wider font-bold">
-                <Building2 className="w-3.5 h-3.5" />
-                <span>Government Officer Access</span>
-              </div>
-              <h1 className="text-xl sm:text-2xl font-bold font-mono text-white tracking-tight">
-                KSHETRA PORTAL LOGIN
+      {/* 2. MAIN PAGE CONTENT CONTAINER */}
+      <main className="my-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8 max-w-[1160px] mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* LEFT COLUMN: OFFICIAL LOGIN FORM (~45% / 5 Cols) */}
+          <div className="lg:col-span-5 bg-white border border-slate-200 rounded-lg shadow-sm p-6 sm:p-8 space-y-6">
+            <div className="space-y-1.5 border-b border-slate-100 pb-5">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Government Officer Login
               </h1>
-              <p className="text-xs text-slate-400">
-                Secure access to National Land Acquisition &amp; Infrastructure Intelligence
+              <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
+                Secure access to the KSHETRA land acquisition intelligence platform.
               </p>
             </div>
 
             {error && (
-              <div className="p-3 bg-red-950/80 border border-red-800 rounded-xs text-red-200 text-xs font-mono flex items-start space-x-2 animate-fadeIn">
-                <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                <span>{error}</span>
+              <div className="p-3.5 bg-red-50 border border-red-200 rounded-md text-red-700 text-xs flex items-start space-x-2.5 animate-fadeIn">
+                <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
+                <span className="leading-snug">{error}</span>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs font-mono">
+            <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-1.5">
-                <label className="text-slate-300 font-bold uppercase tracking-wider block text-[10px]">
-                  Official Government Email / Officer ID
+                <label className="block text-xs font-semibold text-slate-700">
+                  Official Email / Officer ID
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
                   <input
                     type="text"
                     required
                     placeholder="e.g. officer@kshetra.gov.in"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 text-white rounded-xs pl-9 pr-3 py-2 text-xs placeholder:text-slate-500 focus:outline-hidden focus:border-blue-500 font-sans"
+                    className="w-full bg-white border border-slate-300 rounded-md pl-9 pr-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-900/20 focus:border-[#1b365d] transition-colors"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-slate-300 font-bold uppercase tracking-wider block text-[10px]">
+                <label className="block text-xs font-semibold text-slate-700">
                   Password
                 </label>
                 <div className="relative">
-                  <Key className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                  <Key className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
                   <input
                     type="password"
                     required
                     placeholder="••••••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-700 text-white rounded-xs pl-9 pr-3 py-2 text-xs placeholder:text-slate-500 focus:outline-hidden focus:border-blue-500 font-sans"
+                    className="w-full bg-white border border-slate-300 rounded-md pl-9 pr-3.5 py-2 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-900/20 focus:border-[#1b365d] transition-colors"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-[11px] font-sans text-slate-400 pt-1">
-                <label className="flex items-center space-x-2 cursor-pointer select-none">
+              <div className="flex items-center justify-between pt-0.5">
+                <label className="flex items-center space-x-2.5 cursor-pointer select-none">
                   <input
                     type="checkbox"
                     checked={rememberDevice}
                     onChange={(e) => setRememberDevice(e.target.checked)}
-                    className="rounded-xs bg-slate-950 border-slate-700 text-blue-600 focus:ring-0 cursor-pointer"
+                    className="w-4 h-4 rounded border-slate-300 text-[#1b365d] focus:ring-0 cursor-pointer"
                   />
-                  <span>Remember this device</span>
+                  <span className="text-xs text-slate-600 font-normal">Remember this device</span>
                 </label>
               </div>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-2.5 bg-blue-700 hover:bg-blue-600 active:bg-blue-800 text-white font-mono font-bold rounded-xs transition-colors shadow-md flex items-center justify-center space-x-2 cursor-pointer disabled:opacity-50"
+                className="w-full py-2.5 px-4 bg-[#1b365d] hover:bg-[#152a4a] active:bg-[#0f1f38] text-white font-semibold rounded-md transition-colors shadow-2xs flex items-center justify-center space-x-2 text-xs sm:text-sm cursor-pointer disabled:opacity-60"
               >
-                <span>{isSubmitting ? 'VERIFYING CREDENTIALS...' : 'SIGN IN →'}</span>
+                <span>{isSubmitting ? 'Verifying Credentials...' : 'Sign In'}</span>
                 {!isSubmitting && <ArrowRight className="w-4 h-4" />}
               </button>
             </form>
-          </div>
 
-          <div className="pt-4 border-t border-slate-800 space-y-1 text-[10px] font-mono text-slate-500">
-            <div className="flex items-center space-x-1.5 text-slate-400 font-bold">
-              <Lock className="w-3 h-3 text-emerald-400" />
-              <span>Authorized government personnel only</span>
-            </div>
-            <p className="text-slate-500 leading-tight">
-              Prototype authentication for SIH2026 demonstration. Production deployment would integrate authorized Government SSO / identity infrastructure.
-            </p>
-          </div>
-        </div>
-
-        {/* RIGHT COLUMN: SIH 2026 DEMO ACCESS PANEL */}
-        <div className="w-full lg:w-80 bg-slate-900/90 border border-slate-800 rounded-xs p-6 shadow-xl flex flex-col justify-between space-y-5">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
-              <div className="flex items-center space-x-2">
-                <Users className="w-4 h-4 text-amber-400" />
-                <h2 className="font-mono font-bold text-xs text-white uppercase tracking-wider">
-                  SIH 2026 Demo Access
-                </h2>
+            <div className="pt-5 border-t border-slate-100 space-y-2">
+              <div className="flex items-center space-x-2 text-xs font-semibold text-slate-700">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                <span>Authorized government personnel only</span>
               </div>
-              <button
-                type="button"
-                onClick={() => setShowDemoCredentials(!showDemoCredentials)}
-                className="text-[10px] font-mono text-blue-400 hover:underline"
-              >
-                {showDemoCredentials ? 'Hide Info' : 'Show Info'}
-              </button>
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                Prototype authentication for SIH 2026 evaluation. Production deployment integrates official government SSO identity infrastructure.
+              </p>
             </div>
+          </div>
 
-            <div className="p-2.5 bg-amber-950/40 border border-amber-800/60 rounded-xs text-[11px] text-amber-200/90 space-y-1 font-sans">
-              <div className="flex items-start space-x-1.5">
-                <Info className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-                <p className="leading-snug text-[10px]">
-                  <strong>Prototype authentication</strong> — 1-click login below to test role-based access control during evaluation.
+          {/* RIGHT COLUMN: DEMO ROLE ACCESS PANEL (~55% / 7 Cols) */}
+          <div className="lg:col-span-7 bg-white border border-slate-200 rounded-lg shadow-sm p-6 sm:p-8 space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-5">
+              <div>
+                <div className="flex items-center space-x-2.5">
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                    Demo Role Access
+                  </h2>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-800 border border-blue-200">
+                    Prototype environment
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                  For SIH 2026 evaluation, select a role to explore role-based access.
                 </p>
               </div>
             </div>
 
-            {/* 1-CLICK ROLE DEMO LOGIN BUTTONS */}
-            <div className="space-y-2 pt-1 font-mono">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
-                SELECT DEMO ROLE FOR EVALUATION:
-              </span>
+            {/* 6 ROLE CARDS IN A 2-COLUMN GRID */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {DEMO_ACCOUNTS.map((acc) => {
+                const IconComponent = getRoleIcon(acc.role);
+                return (
+                  <button
+                    key={acc.id}
+                    type="button"
+                    onClick={() => handleQuickDemoLogin(acc.role)}
+                    className="text-left p-4 bg-white hover:bg-slate-50/80 border border-slate-200 hover:border-blue-700/50 rounded-lg transition-all cursor-pointer group flex flex-col justify-between h-full space-y-3 shadow-2xs hover:shadow-sm"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div className="w-8 h-8 rounded-md bg-slate-100 text-[#1b365d] group-hover:bg-[#1b365d] group-hover:text-white flex items-center justify-center transition-colors">
+                          <IconComponent className="w-4 h-4" />
+                        </div>
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 group-hover:border-blue-200 group-hover:bg-blue-50 group-hover:text-blue-900 transition-colors uppercase tracking-wider">
+                          {acc.jurisdictionScope}
+                        </span>
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-xs sm:text-sm text-slate-900 group-hover:text-[#1b365d] transition-colors leading-tight">
+                          {acc.roleTitle}
+                        </h3>
+                        <p className="text-[11px] text-slate-500 mt-1 line-clamp-2 leading-snug">
+                          {acc.department}
+                        </p>
+                      </div>
+                    </div>
 
-              {DEMO_ACCOUNTS.map((acc) => (
-                <button
-                  key={acc.id}
-                  type="button"
-                  onClick={() => handleQuickDemoLogin(acc.role)}
-                  className="w-full text-left p-2.5 bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xs transition-all cursor-pointer group flex items-center justify-between"
-                >
-                  <div className="space-y-0.5">
-                    <div className="flex items-center space-x-1.5">
-                      <span className="font-bold text-xs text-white group-hover:text-blue-400 transition-colors">
-                        {acc.roleTitle}
-                      </span>
+                    <div className="flex items-center justify-end text-xs font-semibold text-[#1b365d] opacity-80 group-hover:opacity-100 transition-opacity pt-1">
+                      <span className="text-[11px]">Select Role</span>
+                      <ArrowRight className="w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5" />
                     </div>
-                    <div className="text-[10px] text-slate-400 truncate max-w-[180px]">
-                      {acc.department}
-                    </div>
-                  </div>
-                  <span className="text-[9px] font-bold px-1.5 py-0.5 bg-slate-800 text-slate-300 border border-slate-700 rounded-xs uppercase flex-shrink-0">
-                    {acc.jurisdictionScope}
-                  </span>
-                </button>
-              ))}
+                  </button>
+                );
+              })}
             </div>
+
+            {/* COMPACT PROTOTYPE CREDENTIALS SECTION */}
+            <div className="pt-4 border-t border-slate-100">
+              <div className="bg-slate-50 border border-slate-200 rounded-md p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                <div className="space-y-1">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-semibold text-slate-800">Prototype credentials</span>
+                    <span className="text-[10px] text-slate-400">•</span>
+                    <button
+                      type="button"
+                      onClick={fillDemoCredentials}
+                      className="text-[11px] text-blue-700 hover:text-blue-900 font-medium underline cursor-pointer"
+                    >
+                      Fill into form
+                    </button>
+                  </div>
+                  <div className="text-slate-600 text-[11px] flex flex-wrap items-center gap-x-3">
+                    <span><strong className="font-medium text-slate-500">Email:</strong> admin@kshetra.gov.in</span>
+                    <span className="hidden sm:inline text-slate-300">|</span>
+                    <span><strong className="font-medium text-slate-500">Password:</strong> kshetra2026</span>
+                  </div>
+                </div>
+                <span className="text-[11px] text-slate-500 italic whitespace-nowrap">
+                  For demonstration purposes only
+                </span>
+              </div>
+            </div>
+
           </div>
 
-          {showDemoCredentials && (
-            <div className="pt-3 border-t border-slate-800 text-[10px] font-mono text-slate-400 space-y-1 bg-slate-950 p-2.5 rounded-xs border border-slate-800/80">
-              <div className="text-slate-300 font-bold flex items-center justify-between">
-                <span>MANUAL DEMO CREDENTIALS:</span>
-                <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-              </div>
-              <div><span className="text-slate-500">Email:</span> admin@kshetra.gov.in</div>
-              <div><span className="text-slate-500">Password:</span> kshetra2026</div>
-            </div>
-          )}
         </div>
       </main>
 
-      {/* FOOTER */}
-      <footer className="relative z-10 border-t border-slate-900 bg-slate-950 py-3 px-6 text-center text-[11px] font-mono text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
-        <div className="flex items-center space-x-2">
-          <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
-          <span>KSHETRA &bull; National Infrastructure Intelligence Platform</span>
+      {/* 6. INSTITUTIONAL FOOTER */}
+      <footer className="bg-white border-t border-slate-200 py-4 px-4 sm:px-8 text-xs text-slate-600 font-sans mt-auto">
+        <div className="max-w-[1160px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <div className="space-y-0.5">
+            <div className="font-semibold text-slate-800">
+              KSHETRA — Land Acquisition Intelligence Platform
+            </div>
+            <div className="text-[11px] text-slate-500">
+              SIH 2026 Prototype &bull; Authorized access only
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4 text-xs font-medium text-slate-500">
+            <a href="#privacy" onClick={(e) => e.preventDefault()} className="hover:text-slate-800 transition-colors">
+              Privacy
+            </a>
+            <span>&bull;</span>
+            <a href="#security" onClick={(e) => e.preventDefault()} className="hover:text-slate-800 transition-colors">
+              Security
+            </a>
+            <span>&bull;</span>
+            <a href="#accessibility" onClick={(e) => e.preventDefault()} className="hover:text-slate-800 transition-colors">
+              Accessibility
+            </a>
+          </div>
         </div>
-        <span>Government Operations &bull; SIH26017</span>
       </footer>
     </div>
   );

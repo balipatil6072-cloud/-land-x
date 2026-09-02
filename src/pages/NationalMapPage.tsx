@@ -36,24 +36,38 @@ function createCustomIcon(category: RiskCategory, isVelocityHigh: boolean) {
   });
 }
 
-// Controller to programmatic map pan/zoom
+// Controller to programmatic map pan/zoom & automatic container resize calculation
 function MapViewController({ center, zoom }: { center: [number, number]; zoom: number }) {
   const map = useMap();
+
   useEffect(() => {
     map.flyTo(center, zoom, { duration: 1.2 });
   }, [center, zoom, map]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      map.invalidateSize();
+    };
+
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 200);
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [map]);
+
   return null;
 }
 
-interface NationalMapPageProps {
+export interface NationalMapPageProps {
   selectedState: string;
-  setSelectedState: (s: string) => void;
+  setSelectedState: (state: string) => void;
 }
-
-const INDIA_BOUNDS: [[number, number], [number, number]] = [
-  [6.0, 68.0],
-  [36.0, 97.5],
-];
 
 export const NationalMapPage: React.FC<NationalMapPageProps> = ({
   selectedState,
@@ -245,10 +259,9 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
         <MapContainer
           center={mapCenter}
           zoom={mapZoom}
-          minZoom={4}
-          maxZoom={12}
-          maxBounds={INDIA_BOUNDS}
-          maxBoundsViscosity={1.0}
+          minZoom={2}
+          maxZoom={18}
+          worldCopyJump={true}
           scrollWheelZoom={true}
           style={{ width: '100%', height: '100%' }}
         >
@@ -259,6 +272,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
             <TileLayer
               attribution='Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom'
               url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={18}
+              maxNativeZoom={18}
             />
           )}
 
@@ -266,6 +281,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
             <TileLayer
               attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
               url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={18}
+              maxNativeZoom={18}
             />
           )}
 
@@ -273,6 +290,8 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
             <TileLayer
               attribution='Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, IGN, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
               url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={18}
+              maxNativeZoom={18}
             />
           )}
 
@@ -281,9 +300,13 @@ export const NationalMapPage: React.FC<NationalMapPageProps> = ({
               <TileLayer
                 attribution='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
                 url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+                maxZoom={18}
+                maxNativeZoom={16}
               />
               <TileLayer
                 url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+                maxZoom={18}
+                maxNativeZoom={16}
               />
             </>
           )}

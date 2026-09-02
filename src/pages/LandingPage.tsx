@@ -730,10 +730,11 @@ export const LandingPage: React.FC = () => {
               <div className="h-72 w-full rounded-xs overflow-hidden">
                 <MapContainer
                   center={[20.5937, 78.9629]}
-                  zoom={2.5}
+                  zoom={3}
                   minZoom={2}
-                  maxZoom={8}
-                  scrollWheelZoom={false}
+                  maxZoom={18}
+                  worldCopyJump={true}
+                  scrollWheelZoom={true}
                   zoomControl={false}
                   style={{ width: '100%', height: '100%' }}
                 >
@@ -741,15 +742,21 @@ export const LandingPage: React.FC = () => {
                     <TileLayer
                       attribution='Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom'
                       url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
+                      maxZoom={18}
+                      maxNativeZoom={18}
                     />
                   ) : (
                     <>
                       <TileLayer
                         attribution='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
                         url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+                        maxZoom={18}
+                        maxNativeZoom={16}
                       />
                       <TileLayer
                         url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+                        maxZoom={18}
+                        maxNativeZoom={16}
                       />
                     </>
                   )}
