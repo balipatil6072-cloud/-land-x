@@ -96,13 +96,10 @@ export const LoginPage: React.FC = () => {
           </span>
         </div>
 
-        {/* Center / Right: Portal Title, Demo Label & Public Portal Link */}
+        {/* Center / Right: Portal Title & Public Portal Link */}
         <div className="flex items-center space-x-3 sm:space-x-4">
           <span className="hidden lg:inline-block text-xs font-semibold text-slate-700">
             Government Officer Portal
-          </span>
-          <span className="px-2.5 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded text-[11px] font-medium tracking-wide">
-            SIH 2026 Prototype
           </span>
           <Link
             to="/"
@@ -199,27 +196,20 @@ export const LoginPage: React.FC = () => {
                 <span>Authorized government personnel only</span>
               </div>
               <p className="text-[11px] text-slate-500 leading-relaxed">
-                Prototype authentication for SIH 2026 evaluation. Production deployment integrates official government SSO identity infrastructure.
+                Authorized officer portal. Production deployment integrates official government SSO identity infrastructure.
               </p>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: DEMO ROLE ACCESS PANEL (~55% / 7 Cols) */}
+          {/* RIGHT COLUMN: ROLE-BASED ACCESS PANEL (~55% / 7 Cols) */}
           <div className="lg:col-span-7 bg-white border border-slate-200 rounded-lg shadow-sm p-6 sm:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-100 pb-5">
-              <div>
-                <div className="flex items-center space-x-2.5">
-                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-                    Demo Role Access
-                  </h2>
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-800 border border-blue-200">
-                    Prototype environment
-                  </span>
-                </div>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  For SIH 2026 evaluation, select a role to explore role-based access.
-                </p>
-              </div>
+            <div className="border-b border-slate-100 pb-5">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                Role-Based Access
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Select your officer role to continue.
+              </p>
             </div>
 
             {/* 6 ROLE CARDS IN A 2-COLUMN GRID */}
@@ -261,12 +251,12 @@ export const LoginPage: React.FC = () => {
               })}
             </div>
 
-            {/* COMPACT PROTOTYPE CREDENTIALS SECTION */}
+            {/* COMPACT OFFICER CREDENTIALS SECTION */}
             <div className="pt-4 border-t border-slate-100">
               <div className="bg-slate-50 border border-slate-200 rounded-md p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                 <div className="space-y-1">
                   <div className="flex items-center space-x-2">
-                    <span className="font-semibold text-slate-800">Prototype credentials</span>
+                    <span className="font-semibold text-slate-800">Officer credentials</span>
                     <span className="text-[10px] text-slate-400">•</span>
                     <button
                       type="button"
@@ -283,7 +273,7 @@ export const LoginPage: React.FC = () => {
                   </div>
                 </div>
                 <span className="text-[11px] text-slate-500 italic whitespace-nowrap">
-                  For demonstration purposes only
+                  Authorized operational access
                 </span>
               </div>
             </div>
@@ -301,7 +291,7 @@ export const LoginPage: React.FC = () => {
               KSHETRA — Land Acquisition Intelligence Platform
             </div>
             <div className="text-[11px] text-slate-500">
-              SIH 2026 Prototype &bull; Authorized access only
+              Government Operations Platform &bull; Authorized access only
             </div>
           </div>
 
